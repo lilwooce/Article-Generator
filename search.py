@@ -162,4 +162,4 @@ def main(model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_to
     return final_draft
     
 
-main("Fly Fishing in Colorado")
+main()
