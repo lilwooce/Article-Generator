@@ -112,7 +112,7 @@ def concatenate_files(file_names, output_file_name):
 
 
 
-def main(topic, model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
+def main(model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
     qry = st.text_input(
         "What do you want the topic of the article to be?\n",
         key="query",
@@ -123,20 +123,20 @@ def main(topic, model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000,
         st.write()  # visualize my dataframe in the Streamlit app
 
 
-    query = topic
+    query = qry
     results = analyze_serps(query)
     summary = summarize_nlp(results)
 
-    semantic_readout = generate_semantic_improvements_guide(topic, summary,  model=model, max_tokens=max_tokens_outline)
+    semantic_readout = generate_semantic_improvements_guide(qry, summary,  model=model, max_tokens=max_tokens_outline)
     
 
-    print(f"Topic: {topic}\n")
+    print(f"Topic: {qry}\n")
 
     print(f"Semantic SEO Readout:")
     display(Markdown(str(semantic_readout)))
 
     print("Generating initial outline...")
-    initial_outline = generate_outline(topic, model=model, max_tokens=max_tokens_outline)
+    initial_outline = generate_outline(qry, model=model, max_tokens=max_tokens_outline)
     print("Initial outline created.\n")
 
     print("Improving the initial outline...")
@@ -161,3 +161,5 @@ def main(topic, model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000,
     st.write(final_draft)
     return final_draft
     
+
+main("Fly Fishing in Colorado")
