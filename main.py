@@ -36,12 +36,14 @@ def scrape_google(query):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
     # Build the URL with the query parameter
     url = f'https://www.google.com/search?q={query}'
+    print(f'the web search url in scrape google is {url}')
     # Send a request to the URL and store the HTML content
     html = requests.get(url, headers=headers).content
     # Use BeautifulSoup to parse the HTML content
     soup = BeautifulSoup(html, 'html.parser')
     # Find all the search result elements
-    search_results = soup.find_all('div', {'class': 'g'})
+    search_results = soup.find_all('div')
+    print(f'the search results in scrape google are {search_results}')
     # Initialize an empty list to store the search results
     results = []
     # Loop through each search result and extract the relevant information
@@ -55,6 +57,7 @@ def scrape_google(query):
     # Create a dataframe from the search results
     df = pd.DataFrame(results, columns=['Title', 'URL'])
     df.to_csv("Scraped_URLs_From_SERPS.csv")
+    print(f'at the end of scrape google the df is {df}')
     return df
 
 
@@ -157,6 +160,7 @@ def analyze_serps(query):
     df.to_excel(writer, sheet_name='Sheet1', index=False)
     writer.close()
     # Return the final dataframe
+    print(f'at the end of analyze serps the df is {df}')
     return df
 
 

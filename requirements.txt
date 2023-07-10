@@ -1,6 +1,7 @@
 openai
 bs4
 nltk
+requests
 xlsxwriter
 newspaper3k
 pandas
