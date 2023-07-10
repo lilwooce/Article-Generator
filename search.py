@@ -133,11 +133,10 @@ def main(model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_to
     print(f"Topic: {qry}\n")
 
     print(f"Semantic SEO Readout:")
-    display(Markdown(str(semantic_readout)))
 
     print("Generating initial outline...")
     initial_outline = generate_outline(qry, model=model, max_tokens=max_tokens_outline)
-    st.download_button('Initial Outline', file_names)
+    st.download_button('Initial Outline')
     st.write(initial_outline)
     print("Initial outline created.\n")
 
@@ -157,9 +156,8 @@ def main(model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_to
 
     print("Creating final draft...")
     final_draft = concatenate_files(file_names, "final_draft.txt")
-    display(Markdown(final_draft))
 
-    st.download_button('Download Article', file_names)
+    st.download_button('Download Article')
     st.write(final_draft)
     return final_draft
     
