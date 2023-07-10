@@ -4,7 +4,7 @@ import re
 import streamlit as st
 from IPython.display import display, Markdown
 from main import *
-openai.api_key = "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"
+OPENAI_API_KEY = st.secrets("OPENAI_API_KEY")
 
 
 def save_to_file(filename, content):
