@@ -137,6 +137,8 @@ def main(model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_to
 
     print("Generating initial outline...")
     initial_outline = generate_outline(qry, model=model, max_tokens=max_tokens_outline)
+    st.download_button('Initial Outline', file_names)
+    st.write(initial_outline)
     print("Initial outline created.\n")
 
     print("Improving the initial outline...")
