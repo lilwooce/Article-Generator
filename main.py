@@ -164,6 +164,7 @@ def analyze_serps(query):
 
 # Define a function to summarize the NLP results from the dataframe
 def summarize_nlp(df):
+    print(f'summarizing nlp df is {df}')
     # Calculate the total number of search results
     total_results = len(df)
     # Calculate the average length of the article text
