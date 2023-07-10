@@ -41,7 +41,7 @@ def scrape_google(query):
     # Use BeautifulSoup to parse the HTML content
     soup = BeautifulSoup(html, 'html.parser')
     # Find all the search result elements
-    search_results = soup.find_all('div')
+    search_results = soup.find_all('div') #changed from only getting divs with class 'g'
     # Initialize an empty list to store the search results
     results = []
     # Loop through each search result and extract the relevant information
