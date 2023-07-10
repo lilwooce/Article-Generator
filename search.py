@@ -159,6 +159,5 @@ def main(model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_to
     with open("final_draft.txt") as file:
         st.download_button(label="Download Final Draft", data=file)
     return final_draft
-    
 
 main()
