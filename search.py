@@ -1,6 +1,7 @@
 import openai
 import pandas as pd
 import re
+import streamlit as st
 from IPython.display import display, Markdown
 from main import *
 openai.api_key = "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"
@@ -111,7 +112,17 @@ def concatenate_files(file_names, output_file_name):
 
 
 
-def main(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
+def main(topic, model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
+    qry = st.text_input(
+        "What do you want the topic of the article to be?\n",
+        key="query",
+    )
+
+    if qry:
+        st.title(f"Article about {qry}")  # add a title
+        st.write()  # visualize my dataframe in the Streamlit app
+
+
     query = topic
     results = analyze_serps(query)
     summary = summarize_nlp(results)
@@ -145,6 +156,9 @@ def main(topic, model="gpt-3.5-turbo", max_tokens_outline=2000, max_tokens_secti
     print("Creating final draft...")
     final_draft = concatenate_files(file_names, "final_draft.txt")
     display(Markdown(final_draft))
+
+    st.download_button('Download Article', file_names)
+    st.write(final_draft)
     return final_draft
     
 
