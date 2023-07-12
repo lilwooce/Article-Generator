@@ -159,6 +159,8 @@ def main():
         st.title(f"Article about {qry}")  # add a title
         st.write()  # visualize my dataframe in the Streamlit app
     
+    createArticle(qry)
+    time.sleep(61)
     relatedQueries = relQueries(qry)
 
     for qry in relatedQueries:
