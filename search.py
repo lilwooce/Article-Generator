@@ -160,12 +160,6 @@ def main():
         st.write()  # visualize my dataframe in the Streamlit app
     
     createArticle(qry)
-    time.sleep(61)
-    relatedQueries = relQueries(qry)
-
-    for qry in relatedQueries:
-        createArticle(qry)
-        time.sleep(61)
 
 
     
