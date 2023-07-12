@@ -13,6 +13,7 @@ import statistics
 import collections
 from nltk.collocations import TrigramAssocMeasures, TrigramCollocationFinder
 from nltk.collocations import QuadgramAssocMeasures, QuadgramCollocationFinder
+from pytrends.request import TrendReq
 
 
 
@@ -57,6 +58,13 @@ def scrape_google(query):
     df.to_csv("Scraped_URLs_From_SERPS.csv")
     return df
 
+def relQueries(query):
+    pytrends = TrendReq(hl='en-US', tz=360)
+    pytrends.build_payload(kw_list=[query], cat=184, timeframe="today 12-m")
+    relTop = pytrends.related_topics()
+    topRelated = relTop.get(query).get('top')
+    topTopics = topRelated['topic_title'].explode().to_list()
+    return topTopics
 
 def scrape_article(url):
     try:

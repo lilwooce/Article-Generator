@@ -1,6 +1,7 @@
 import openai
 import pandas as pd
 import re
+import time
 import streamlit as st
 from IPython.display import display, Markdown
 from main import *
@@ -110,19 +111,7 @@ def concatenate_files(file_names, output_file_name):
     print("Final draft created.\n")
     return final_draft
 
-
-
-def main(model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
-    qry = st.text_input(
-        "What do you want the topic of the article to be?\n",
-        key="query",
-    )
-
-    if qry:
-        st.title(f"Article about {qry}")  # add a title
-        st.write()  # visualize my dataframe in the Streamlit app
-
-
+def createArticle(qry, model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
     query = qry
     results = analyze_serps(query)
     summary = summarize_nlp(results)
@@ -159,5 +148,25 @@ def main(model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_to
     with open("final_draft.txt") as file:
         st.download_button(label="Download Final Draft", data=file)
     return final_draft
+
+def main():
+    qry = st.text_input(
+        "What do you want the topic of the article to be?\n",
+        key="query",
+    )
+
+    if qry:
+        st.title(f"Article about {qry}")  # add a title
+        st.write()  # visualize my dataframe in the Streamlit app
+    
+    relatedQueries = relQueries(qry)
+
+    for qry in relatedQueries:
+        createArticle(qry)
+        time.sleep(61)
+
+
+    
+    
 
 main()
