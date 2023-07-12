@@ -5,6 +5,8 @@ requests
 xlsxwriter
 newspaper3k
 pandas
+git+https://github.com/GeneralMills/pytrends
+advertools
 streamlit
 regex
 ipython
