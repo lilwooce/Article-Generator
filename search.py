@@ -12,7 +12,7 @@ def save_to_file(filename, content):
     with open(filename, 'w') as f:
         f.write("\n".join(content))
 
-def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
+def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=500, temperature=0.4):
     gpt_response = openai.ChatCompletion.create(
         model=model,
         messages=[
@@ -27,7 +27,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=1000, temperature
     #print(response)
     return response.strip().split('\n')
 
-def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=2000, temperature=0.4):
+def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
     gpt_response = openai.ChatCompletion.create(
         model=model,
         messages=[
@@ -44,13 +44,13 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
     save_to_file("Semantic_SEO_Readout.txt", formatted_response)
     return response   
 
-def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=1000):
+def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=500):
     prompt = f"Generate an incredibly thorough article outline for the topic: {topic}. Consider all possible angles and be as thorough as possible. Please use Roman Numerals for each section."
     outline = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file("outline.txt", outline)
     return outline
 
-def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens=1000):
+def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens=500):
     prompt = f"Given the following article outline, please improve and extend this outline significantly. Please use Roman Numerals for each section. The goal is as thorough, clear, and useful out line as possible exploring the topic in as much depth as possible. Think step by step before answering. Please take into consideration the semantic seo readout provided here: {semantic_readout} which should help inform some of the improvements you can make, though please also consider additional improvements not included in this semantic seo readout.  Outline to improve: {outline}."
     improved_outline = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file("improved_outline.txt", improved_outline)
@@ -58,7 +58,7 @@ def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens
 
 
 
-def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
+def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=1000):
     sections = []
 
     # Parse the outline to identify the major sections
@@ -79,7 +79,7 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
         full_outline += '\n'.join(improved_outline)
         specific_section = ", and focusing specifically on the following section: "
         specific_section += section_outline
-        prompt = full_outline + specific_section + ", please write a thorough part of the article that goes in-depth, provides detail and evidence, and adds as much additional value as possible. Section text:"
+        prompt = full_outline + specific_section + ", please write a thorough part of the article that goes in-depth, provides detail and evidence, and adds as much additional value as possible. Make sure that each section is outputted in an HTML code format so that I can put it in a webpage easily.  Section text:"
         section = generate_content(prompt, model=model, max_tokens=max_tokens)
         sections.append(section)
         save_to_file(f"section_{i+1}.txt", section)
@@ -87,8 +87,8 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=2000):
 
 
 
-def improve_section(section, i, model="gpt-4", max_tokens=4000):
-    prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Only provide the updated section, not the text of your recommendation, just make the changes. Provide the updated section in Markdown please. Updated Section with improvements:"
+def improve_section(section, i, model="gpt-3.5-turbo-16k", max_tokens=2000):
+    prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Only provide the updated section, not the text of your recommendation, just make the changes. Provide the updated section in Markdown please. Make sure that each section is outputted in an HTML code format so that I can put it in a webpage easily. Updated Section with improvements:"
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file(f"improved_section_{i+1}.txt", improved_section)
     return " ".join(improved_section)  # join the lines into a single string
@@ -111,7 +111,7 @@ def concatenate_files(file_names, output_file_name):
     print("Final draft created.\n")
     return final_draft
 
-def createArticle(qry, model="gpt-4", max_tokens_outline=2000, max_tokens_section=2000, max_tokens_improve_section=4000):
+def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=1000, max_tokens_section=1000, max_tokens_improve_section=2000):
     query = qry
     results = analyze_serps(query)
     summary = summarize_nlp(results)
