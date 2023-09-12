@@ -50,7 +50,7 @@ def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=500):
     save_to_file("outline.txt", outline)
     return outline
 
-def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens=500):
+def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens=1000):
     prompt = f"Given the following article outline, please improve and extend this outline significantly. Please use Roman Numerals for each section. The goal is as thorough, clear, and useful out line as possible exploring the topic in as much depth as possible. Think step by step before answering. Please take into consideration the semantic seo readout provided here: {semantic_readout} which should help inform some of the improvements you can make, though please also consider additional improvements not included in this semantic seo readout.  Outline to improve: {outline}."
     improved_outline = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file("improved_outline.txt", improved_outline)
@@ -111,7 +111,7 @@ def concatenate_files(file_names, output_file_name):
     print("Final draft created.\n")
     return final_draft
 
-def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_tokens_section=250, max_tokens_improve_section=500):
+def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_tokens_section=500, max_tokens_improve_section=500):
     query = qry
     results = analyze_serps(query)
     summary = summarize_nlp(results)
@@ -140,7 +140,7 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_to
     print("Improving sections...")
     file_names = [f"improved_section_{i+1}.txt" for i in range(len(sections))]
     for i, section in enumerate(sections):
-        improve_section(section, i, model='gpt-3.5-turbo', max_tokens=500)
+        improve_section(section, i, model='gpt-3.5-turbo', max_tokens=1000)
     print("Improved sections created.\n")
 
     print("Creating final draft...")
