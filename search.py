@@ -58,7 +58,7 @@ def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens
 
 
 
-def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=1000):
+def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=250):
     sections = []
 
     # Parse the outline to identify the major sections
@@ -87,7 +87,7 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=1000):
 
 
 
-def improve_section(section, i, model="gpt-3.5-turbo-16k", max_tokens=2000):
+def improve_section(section, i, model="gpt-3.5-turbo-16k", max_tokens=500):
     prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Only provide the updated section, not the text of your recommendation, just make the changes. Provide the updated section in Markdown please. Make sure that each section is outputted in an HTML code format so that I can put it in a webpage easily. Updated Section with improvements:"
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file(f"improved_section_{i+1}.txt", improved_section)
@@ -111,7 +111,7 @@ def concatenate_files(file_names, output_file_name):
     print("Final draft created.\n")
     return final_draft
 
-def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=1000, max_tokens_section=1000, max_tokens_improve_section=2000):
+def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_tokens_section=250, max_tokens_improve_section=500):
     query = qry
     results = analyze_serps(query)
     summary = summarize_nlp(results)
@@ -130,7 +130,7 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=1000, max_t
     print("Initial outline created.\n")
 
     print("Improving the initial outline...")
-    improved_outline = improve_outline(initial_outline, semantic_readout, model='gpt-3.5-turbo', max_tokens=1800)
+    improved_outline = improve_outline(initial_outline, semantic_readout, model='gpt-3.5-turbo', max_tokens=500)
     print("Improved outline created.\n")
 
     print("Generating sections based on the improved outline...")
@@ -140,7 +140,7 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=1000, max_t
     print("Improving sections...")
     file_names = [f"improved_section_{i+1}.txt" for i in range(len(sections))]
     for i, section in enumerate(sections):
-        improve_section(section, i, model='gpt-3.5-turbo', max_tokens=2000)
+        improve_section(section, i, model='gpt-3.5-turbo', max_tokens=500)
     print("Improved sections created.\n")
 
     print("Creating final draft...")
