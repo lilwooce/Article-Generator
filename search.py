@@ -158,18 +158,20 @@ def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the topic of the article to be?\n",
+        "What do you want the main topic of the articles to be?\n",
         key="query",
     )
 
     if qry:
         st.title(f"Article about {qry}")  # add a title
-        #categories = generateCategories(qry)
-        mainCat = WPUploader.createWPCategory(qry)
-        st.write(f"Main Category ID is {mainCat}")
-        subCat = WPUploader.createWPCategory("Fly Fishing Equipment", mainCat)
-        a = createArticle(qry)
-        WPUploader.createWPPost(a, qry, [subCat])
-        st.write()  # visualize my dataframe in the Streamlit app
+        categories = generateCategories(qry)
+        st.write(categories)
+        #mainCat = WPUploader.createWPCategory(qry)
+        #st.write(f"Main Category ID is {mainCat}")
+        #for cat in categories:
+            #subCat = WPUploader.createWPCategory(cat, mainCat)
+            #a = createArticle(cat)
+            #WPUploader.createWPPost(a, qry, [subCat])
+        #st.write()  # visualize my dataframe in the Streamlit app
     
 main()
