@@ -20,7 +20,7 @@ site_url = 'https://shop.genbc.io'
 username = 'protheus99@gmail.com'
 # The application password you generated
 password = 'Mroq tBu0 kLOW z0d8 oP4p 3LfA'
-def create_category(category_name):
+def create_category(category_name, parent='None'):
     # Check if the category already exists
     url = f'{site_url}/wp-json/wp/v2/categories?search={category_name}'
     response = requests.get(url, auth=(username, password))
@@ -35,7 +35,8 @@ def create_category(category_name):
     # The category doesn't exist, so create it
     url = f'{site_url}/wp-json/wp/v2/categories'
     data = {
-        'name': category_name
+        'name': category_name,
+        'parent': parent
     }
     response = requests.post(url, auth=(username, password), json=data)
     
