@@ -20,7 +20,7 @@ site_url = 'https://shop.genbc.io'
 username = 'protheus99@gmail.com'
 # The application password you generated
 password = 'mBjE xlA6 fBsv SZ8k MgqT Udql'
-def create_category(category_name):
+def create_category(category_name, parent='None'):
     # Check if the category already exists
     url = f'{site_url}/wp-json/wp/v2/categories?search={category_name}'
     response = requests.get(url, auth=(username, password))
@@ -31,11 +31,14 @@ def create_category(category_name):
             if category['name'].lower() == category_name.lower():
                 st.write(f"Category '{category_name}' already exists")
                 return category['id']
+    else:
+        st.write(f"failed to connect to site: {response} | {response.text}")
     
     # The category doesn't exist, so create it
     url = f'{site_url}/wp-json/wp/v2/categories'
     data = {
         'name': category_name,
+        'parent': parent
     }
     response = requests.post(url, auth=(username, password), json=data)
     
@@ -44,7 +47,7 @@ def create_category(category_name):
         st.write(f"Category '{category_name}' created successfully")
         return category['id']
     else:
-        st.write(f"Failed to create category '{category_name}': {response.text}")
+        st.write(f"Failed to create category '{category_name}': {response} | {response.text}")
         return None
 # Test the function
 
