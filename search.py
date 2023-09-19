@@ -5,6 +5,7 @@ import time
 import streamlit as st
 from IPython.display import display, Markdown
 from main import *
+from .WPUploader import *
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 
 
@@ -31,6 +32,7 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
     gpt_response = openai.ChatCompletion.create(
         model=model,
         messages=[
+            #this is the improvement prompt
             {"role": "system", "content": "You are an expert at Semantic SEO. In particular, you are superhuman at taking the result of an NLP keyword analysis of a search engine results page for a given keyword, and using it to build a readout/guide that can be used to inform someone writing a long-form article about a given topic so that they can best fully cover the semantic SEO as shown in the SERP. The goal of this guide is to help the writer make sure that the content they are creating is as comprehensive to the semantic SEO expressed in the content that ranks on the first page of Google for the given query. With the following semantic data, please provide this readout/guide. This readout/guide should be useful to someone writing about the topic, and should not include instructions to add info to the article about the SERP itself. The SERP semantic SEO data is just to be used to help inform the guide/readout. Please provide the readout/guide in well organized and hierarchical markdown."},
             {"role": "user", "content": f"Semantic SEO data for the keyword based on the content that ranks on the first page of google for the given keyword query of: {query} and it's related semantic data:  {prompt}"}],
         max_tokens=max_tokens,
@@ -79,7 +81,7 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=250):
         full_outline += '\n'.join(improved_outline)
         specific_section = ", and focusing specifically on the following section: "
         specific_section += section_outline
-        prompt = full_outline + specific_section + ", please write a thorough part of the article that goes in-depth, provides detail and evidence, and adds as much additional value as possible. Make sure that each section is outputted in an HTML code format so that I can put it in a webpage easily.  Section text:"
+        prompt = full_outline + specific_section + ", please write a thorough part of the article that goes in-depth, provides detail and evidence, and adds as much additional value as possible. Section text:"
         section = generate_content(prompt, model=model, max_tokens=max_tokens)
         sections.append(section)
         save_to_file(f"section_{i+1}.txt", section)
@@ -88,7 +90,7 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=250):
 
 
 def improve_section(section, i, model="gpt-3.5-turbo-16k", max_tokens=500):
-    prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Only provide the updated section, not the text of your recommendation, just make the changes. Provide the updated section in Markdown please. Make sure that each section is outputted in an HTML code format so that I can put it in a webpage easily. Updated Section with improvements:"
+    prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Only provide the updated section, not the text of your recommendation, just make the changes. Provide the updated section in Markdown please. Updated Section with improvements:"
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file(f"improved_section_{i+1}.txt", improved_section)
     return " ".join(improved_section)  # join the lines into a single string
@@ -149,6 +151,11 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_to
         st.download_button(label="Download Final Draft", data=file)
     return final_draft
 
+def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
+    prompt = f"Given the following query: {qry}, please provide 7 categories that would fit into a wordpress article of the same topic. The topics must differ from eachother and must also be related to the main query provided. Provide the categories in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part."
+    categoryArray = generate_content(prompt, model=model, max_tokens=max_tokens)
+    return categoryArray
+
 def main():
     qry = st.text_input(
         "What do you want the topic of the article to be?\n",
@@ -159,7 +166,12 @@ def main():
         st.title(f"Article about {qry}")  # add a title
         st.write()  # visualize my dataframe in the Streamlit app
     
-    createArticle(qry)
+    #categories = generateCategories(qry)
+    createWPCategory(qry)
+    createWPCategory("Fly Fishing Equipment", qry)
+    a = createArticle(qry)
+    createWPPost(a, qry, ["Fly Fishing Equipment"])
+
 
 
     
