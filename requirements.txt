@@ -4,6 +4,7 @@ nltk
 requests
 xlsxwriter
 newspaper3k
+wordpress-api
 pandas
 git+https://github.com/GeneralMills/pytrends
 advertools
@@ -11,4 +12,3 @@ streamlit
 regex
 ipython
 python-slugify
-wordpress-api
