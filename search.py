@@ -165,7 +165,7 @@ def main():
     if qry:
         st.title(f"Article about {qry}")  # add a title
         categories = generateCategories(qry)
-        st.write(categories)
+        st.write(categories[0])
         #mainCat = WPUploader.createWPCategory(qry)
         #st.write(f"Main Category ID is {mainCat}")
         #for cat in categories:
