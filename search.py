@@ -159,7 +159,7 @@ def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v7!\n",
+        "What do you want the main topic of the articles to be? v8!\n",
         key="query",
     )
 
@@ -167,7 +167,8 @@ def main():
         st.title(f"Article about {qry}")  # add a title
         categories = generateCategories(qry)
         st.write(categories)
-        #categories = categories[0].strip('[]')
+        categories = categories[0].strip('[]')
+        st.write(categories)
         categories = categories[0].split(',')
         st.write(categories)
         mainCat = WPUploader.createWPCategory(qry)
