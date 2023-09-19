@@ -150,7 +150,7 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_to
     print("Creating final draft...")
     final_draft = concatenate_files(file_names, "final_draft.txt")
     with open("final_draft.txt") as file:
-        st.download_button(label="Download Final Draft", data=file, key=qry)
+        st.download_button(label=f"Download Final Draft ({qry})", data=file, key=qry)
     return final_draft
 
 def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
@@ -160,7 +160,7 @@ def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v10!\n",
+        "What do you want the main topic of the articles to be? v11!\n",
         key="query",
     )
 
@@ -175,7 +175,7 @@ def main():
             st.write(f"Creating article using the category {cat}")
             subCat = WPUploader.createWPCategory(cat, mainCat)
             a = createArticle(cat)
-            WPUploader.createWPPost(a, qry, [subCat])
+            WPUploader.createWPPost(a, cat, [subCat])
             asyncio.sleep(120)
         st.write()  # visualize my dataframe in the Streamlit app
     
