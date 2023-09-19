@@ -26,7 +26,7 @@ def createWPPost(article, title, categories):
     st.write(article)
     data = {
     'title' : title,
-    'content' : article.read(),
+    'content' : article,
     'status' : 'publish', 
     'categories': categories,
     'date' : str(datetime.now()),
@@ -42,8 +42,18 @@ def createWPPost(article, title, categories):
         return None
 
 def createWPCategory(name, parentID=None):
+    # Check if the category already exists
+    url = f'https://shop.genbc.io/wp-json/wp/v2/categories?search={name}'
+    response = requests.get(url, auth=(username, password))
+    
+    if response.status_code == 200:
+        categories = json.loads(response.text)
+        for category in categories:
+            if category['name'].lower() == name.lower():
+                st.write(f"Category '{name}' already exists")
+                return category['id']
+            
     st.write("creating wordpress category")
-    st.write()
     api_url = 'https://shop.genbc.io/wp-json/wp/v2/categories'
     data = {
         'name': name,
