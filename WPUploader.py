@@ -7,47 +7,11 @@ from slugify import slugify
 import streamlit as st
 
 username = "protheus99@gmail.com"
-password = "Mroq tBu0 kLOW z0d8 oP4p 3LfA"
+password = "mBjE xlA6 fBsv SZ8k MgqT Udql"
 
 wordpress_credentials = username + ":" + password
 wordpress_token = base64.b64encode(wordpress_credentials.encode())
 wordpress_header = {'Authorization': 'Basic ' + wordpress_token.decode('utf-8'), 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36'}
-
-
-# Your WordPress site URL
-site_url = 'https://shop.genbc.io'
-# Your WordPress username
-username = 'protheus99@gmail.com'
-# The application password you generated
-password = 'mBjE xlA6 fBsv SZ8k MgqT Udql'
-def create_category(category_name, parent='None'):
-    # Check if the category already exists
-    url = f'{site_url}/wp-json/wp/v2/categories?search={category_name}'
-    response = requests.get(url, auth=(username, password))
-    
-    if response.status_code == 200:
-        categories = json.loads(response.text)
-        for category in categories:
-            if category['name'].lower() == category_name.lower():
-                st.write(f"Category '{category_name}' already exists")
-                return category['id']
-    
-    # The category doesn't exist, so create it
-    url = f'{site_url}/wp-json/wp/v2/categories'
-    data = {
-        'name': category_name,
-        'parent': parent
-    }
-    response = requests.post(url, wordpress_header, json=data)
-    
-    if response.status_code == 201:
-        category = json.loads(response.text)
-        st.write(f"Category '{category_name}' created successfully")
-        return category['id']
-    else:
-        st.write(f"Failed to create category '{category_name}': {response} | {response.text}")
-        return None
-# Test the function
 
 
 def createWPPost(article, title, categories):
@@ -63,7 +27,13 @@ def createWPPost(article, title, categories):
     'slug' : slugify(title),
     }
     response = requests.post(api_url, headers=wordpress_header, json=data)
-    st.write(response)
+    if response.status_code == 201:
+        category = json.loads(response.text)
+        st.write(f"Post '{title}' created successfully")
+        return category['id']
+    else:
+        st.write(f"Failed to create post '{title}': {response.text}")
+        return None
 
 def createWPCategory(name, parentID="None"):
     st.write("creating wordpress category")
@@ -75,4 +45,10 @@ def createWPCategory(name, parentID="None"):
         'parent': parentID
     }
     response = requests.post(api_url, headers=wordpress_header, json=data)
-    st.write(response)
+    if response.status_code == 201:
+        category = json.loads(response.text)
+        st.write(f"Category '{name}' created successfully")
+        return category['id']
+    else:
+        st.write(f"Failed to create category '{name}': {response.text}")
+        return None
