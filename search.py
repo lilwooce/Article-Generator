@@ -165,9 +165,9 @@ def main():
     if qry:
         st.title(f"Article about {qry}")  # add a title
         #categories = generateCategories(qry)
-        WPUploader.createWPCategory(qry)
-        print("creating another category")
-        WPUploader.createWPCategory("Fly Fishing Equipment", qry)
+        mainCat = WPUploader.create_category(qry)
+        st.write(f"Main Category ID is {mainCat}")
+        WPUploader.create_category("Fly Fishing Equipment", mainCat)
         #a = createArticle(qry)
         #WPUploader.createWPPost(a, qry, ["Fly Fishing Equipment"])
         st.write()  # visualize my dataframe in the Streamlit app
