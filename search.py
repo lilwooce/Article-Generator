@@ -167,6 +167,7 @@ def main():
         st.title(f"Article about {qry}")  # add a title
         categories = generateCategories(qry)
         categories = categories[0].split(',')
+        categories = categories.strip('[]')
         st.write(categories)
         mainCat = WPUploader.createWPCategory(qry)
         st.write(f"Main Category ID is {mainCat}")
