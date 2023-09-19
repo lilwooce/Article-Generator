@@ -19,7 +19,7 @@ site_url = 'https://shop.genbc.io'
 # Your WordPress username
 username = 'protheus99@gmail.com'
 # The application password you generated
-password = 'Mroq tBu0 kLOW z0d8 oP4p 3LfA'
+password = 'mBjE xlA6 fBsv SZ8k MgqT Udql'
 def create_category(category_name, parent='None'):
     # Check if the category already exists
     url = f'{site_url}/wp-json/wp/v2/categories?search={category_name}'
