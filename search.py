@@ -167,9 +167,9 @@ def main():
         #categories = generateCategories(qry)
         mainCat = WPUploader.createWPCategory(qry)
         st.write(f"Main Category ID is {mainCat}")
-        WPUploader.createWPCategory("Fly Fishing Equipment", mainCat)
+        subCat = WPUploader.createWPCategory("Fly Fishing Equipment", mainCat)
         a = createArticle(qry)
-        WPUploader.createWPPost(a, qry, ["Fly Fishing Equipment"])
+        WPUploader.createWPPost(a, qry, [subCat])
         st.write()  # visualize my dataframe in the Streamlit app
     
 main()

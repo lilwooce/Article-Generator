@@ -32,6 +32,7 @@ def createWPPost(article, title, categories):
     'date' : str(datetime.now()),
     'slug' : slugify(title),
     }
+    
     response = requests.post(api_url, headers=wordpress_header, json=data)
     if response.status_code == 201:
         category = json.loads(response.text)
