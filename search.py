@@ -150,7 +150,7 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_to
     print("Creating final draft...")
     final_draft = concatenate_files(file_names, "final_draft.txt")
     with open("final_draft.txt") as file:
-        st.download_button(label="Download Final Draft", data=file)
+        st.download_button(label="Download Final Draft", data=file, key=qry)
     return final_draft
 
 def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
