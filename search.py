@@ -130,7 +130,7 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_to
     print("Generating initial outline...")
     initial_outline = generate_outline(qry, model=model, max_tokens=max_tokens_outline)
     with open("outline.txt") as file:
-        st.download_button(label="Initial Outline", data=file)
+        st.download_button(label=f"Initial Outline ({qry})", data=file, key=f"IO {qry}")
     print("Initial outline created.\n")
 
     print("Improving the initial outline...")
@@ -160,7 +160,7 @@ def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v11!\n",
+        "What do you want the main topic of the articles to be? v12!\n",
         key="query",
     )
 
