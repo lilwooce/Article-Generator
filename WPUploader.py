@@ -7,7 +7,7 @@ from slugify import slugify
 import streamlit as st
 
 username = "protheus99@gmail.com"
-password = "mBjE xlA6 fBsv SZ8k MgqT Udql"
+password = "bPUx nRux bJXP k3SS xKCQ Zdy0"
 #mBjE xlA6 fBsv SZ8k MgqT Udql
 #ycUa Ym1N Nya6 C6DJ cISU PyQ1
 
