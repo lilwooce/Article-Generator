@@ -10,3 +10,5 @@ advertools
 streamlit
 regex
 ipython
+python-slugify
+wordpress
