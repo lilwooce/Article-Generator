@@ -15,6 +15,7 @@ wordpress_header = {'Authorization': 'Basic ' + wordpress_token.decode('utf-8'),
 
 
 def createWPPost(article, title, categories):
+    print("creating wordpress post")
     api_url = 'https://shop.genbc.io/wp-json/wp/v2/posts/'
     article = open(article)
     data = {
@@ -30,6 +31,7 @@ def createWPPost(article, title, categories):
     print(response)
 
 def createWPCategory(name, parentID="None"):
+    print("creating wordpress category")
     api_url = 'https://shop.genbc.io/wp-json/wp/v2/categories'
     data = {
         'name': name,
