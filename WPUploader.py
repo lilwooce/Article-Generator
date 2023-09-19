@@ -26,6 +26,7 @@ def createWPPost(article, title, categories):
     'slug' : slugify(title),
     }
     response = requests.post(api_url,headers=wordpress_header, json=data)
+    print(response.status_code)
     print(response)
 
 def createWPCategory(name, parentID="None"):
@@ -36,4 +37,5 @@ def createWPCategory(name, parentID="None"):
         'parent': parentID
     }
     response = requests.post(api_url, headers=wordpress_header, json=data)
+    print(response.status_code)
     print(response)

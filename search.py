@@ -169,8 +169,8 @@ def main():
     #categories = generateCategories(qry)
     WPUploader.createWPCategory(qry)
     WPUploader.createWPCategory("Fly Fishing Equipment", qry)
-    a = createArticle(qry)
-    WPUploader.createWPPost(a, qry, ["Fly Fishing Equipment"])
+    #a = createArticle(qry)
+    #WPUploader.createWPPost(a, qry, ["Fly Fishing Equipment"])
 
 
 
