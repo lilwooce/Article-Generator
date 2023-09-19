@@ -31,8 +31,6 @@ def create_category(category_name, parent='None'):
             if category['name'].lower() == category_name.lower():
                 st.write(f"Category '{category_name}' already exists")
                 return category['id']
-    else:
-        st.write(f"failed to connect to site: {response} | {response.text}")
     
     # The category doesn't exist, so create it
     url = f'{site_url}/wp-json/wp/v2/categories'
@@ -40,7 +38,7 @@ def create_category(category_name, parent='None'):
         'name': category_name,
         'parent': parent
     }
-    response = requests.post(url, auth=(username, password), json=data)
+    response = requests.post(url, wordpress_header, json=data)
     
     if response.status_code == 201:
         category = json.loads(response.text)
