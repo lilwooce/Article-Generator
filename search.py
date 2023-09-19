@@ -172,6 +172,7 @@ def main():
         mainCat = WPUploader.createWPCategory(qry)
         st.write(f"Main Category ID is {mainCat}")
         for cat in categories:
+            st.write(f"Creating article using the category {cat}")
             subCat = WPUploader.createWPCategory(cat, mainCat)
             a = createArticle(cat)
             WPUploader.createWPPost(a, qry, [subCat])
