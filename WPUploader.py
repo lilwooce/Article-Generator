@@ -6,7 +6,7 @@ from datetime import datetime
 from slugify import slugify
 import streamlit as st
 
-username = "protheus99@gmail.com"
+username = "juhwooce"
 password = "mBjE xlA6 fBsv SZ8k MgqT Udql"
 #mBjE xlA6 fBsv SZ8k MgqT Udql
 #ycUa Ym1N Nya6 C6DJ cISU PyQ1
