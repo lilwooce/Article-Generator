@@ -41,7 +41,7 @@ def createWPPost(article, title, categories):
         st.write(f"Failed to create post '{title}': {response.text}")
         return None
 
-def createWPCategory(name, parentID="None"):
+def createWPCategory(name, parentID=None):
     st.write("creating wordpress category")
     st.write()
     api_url = 'https://shop.genbc.io/wp-json/wp/v2/categories'
