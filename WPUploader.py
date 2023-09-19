@@ -37,5 +37,3 @@ def createWPCategory(name, parentID="None"):
     }
     response = requests.post(api_url, headers=wordpress_header, json=data)
     print(response)
-
-createWPPost()
