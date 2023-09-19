@@ -6,6 +6,7 @@ import asyncio
 import streamlit as st
 from IPython.display import display, Markdown
 from main import *
+from ast import literal_eval
 import WPUploader
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 
@@ -166,10 +167,7 @@ def main():
     if qry:
         st.title(f"Article about {qry}")  # add a title
         categories = generateCategories(qry)
-        st.write(categories)
-        categories = categories[0].strip('[]')
-        st.write(categories)
-        categories = categories[0].split(',')
+        categories = literal_eval(categories[0])
         st.write(categories)
         mainCat = WPUploader.createWPCategory(qry)
         st.write(f"Main Category ID is {mainCat}")
