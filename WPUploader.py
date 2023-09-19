@@ -1,6 +1,7 @@
 import requests
 import base64
 import json
+import wordpress
 from wordpress import API
 from datetime import datetime
 from slugify import slugify
