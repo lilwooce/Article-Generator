@@ -160,7 +160,7 @@ def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v8!\n",
+        "What do you want the main topic of the articles to be? v10!\n",
         key="query",
     )
 
