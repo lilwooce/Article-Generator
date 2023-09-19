@@ -7,11 +7,12 @@ from slugify import slugify
 import streamlit as st
 
 username = "protheus99@gmail.com"
-password = "Mroq tBu0 kLOW z0d8 oP4p 3LfA"
+password = "RMP3 cfy0 luKu lNWU tQdp D7dS"
 #mBjE xlA6 fBsv SZ8k MgqT Udql
 #ycUa Ym1N Nya6 C6DJ cISU PyQ1
 #Mroq tBu0 kLOW z0d8 oP4p 3LfA
 #bPUx nRux bJXP k3SS xKCQ Zdy0
+#RMP3 cfy0 luKu lNWU tQdp D7dS
 
 wordpress_credentials = username + ":" + password
 wordpress_token = base64.b64encode(wordpress_credentials.encode())
