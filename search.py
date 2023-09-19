@@ -5,7 +5,7 @@ import time
 import streamlit as st
 from IPython.display import display, Markdown
 from main import *
-from .WPUploader import *
+import WPUploader
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 
 
@@ -167,10 +167,10 @@ def main():
         st.write()  # visualize my dataframe in the Streamlit app
     
     #categories = generateCategories(qry)
-    createWPCategory(qry)
-    createWPCategory("Fly Fishing Equipment", qry)
+    WPUploader.createWPCategory(qry)
+    WPUploader.createWPCategory("Fly Fishing Equipment", qry)
     a = createArticle(qry)
-    createWPPost(a, qry, ["Fly Fishing Equipment"])
+    WPUploader.createWPPost(a, qry, ["Fly Fishing Equipment"])
 
 
 
