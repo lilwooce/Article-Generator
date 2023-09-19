@@ -2,6 +2,7 @@ import openai
 import pandas as pd
 import re
 import time
+import asyncio
 import streamlit as st
 from IPython.display import display, Markdown
 from main import *
@@ -165,13 +166,15 @@ def main():
     if qry:
         st.title(f"Article about {qry}")  # add a title
         categories = generateCategories(qry)
-        st.write(categories[0])
-        #mainCat = WPUploader.createWPCategory(qry)
-        #st.write(f"Main Category ID is {mainCat}")
-        #for cat in categories:
-            #subCat = WPUploader.createWPCategory(cat, mainCat)
-            #a = createArticle(cat)
-            #WPUploader.createWPPost(a, qry, [subCat])
-        #st.write()  # visualize my dataframe in the Streamlit app
+        categories = categories[0]
+        st.write(categories)
+        mainCat = WPUploader.createWPCategory(qry)
+        st.write(f"Main Category ID is {mainCat}")
+        for cat in categories:
+            subCat = WPUploader.createWPCategory(cat, mainCat)
+            a = createArticle(cat)
+            WPUploader.createWPPost(a, qry, [subCat])
+            asyncio.sleep(120)
+        st.write()  # visualize my dataframe in the Streamlit app
     
 main()
