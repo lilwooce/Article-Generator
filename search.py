@@ -153,7 +153,7 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_to
     return final_draft
 
 def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
-    prompt = f"Given the following query: {qry}, please provide 7 categories that would fit into a wordpress article of the same topic. The topics must differ from eachother and must also be related to the main query provided. Provide the categories in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response if I gave you the prompt 'television' would be: 'Television Stores', 'Television Deals', 'Television Repair', 'Wall Television Installation', 'Television Shows', 'Television Remotes', 'Televisions For Home Use'"
+    prompt = f"Given the following query: {qry}, please provide 7 categories that would fit into a wordpress article of the same topic. The topics must differ from eachother and must also be related to the main query provided. Provide the categories in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response if I gave you the prompt 'television' would be: ['Television Stores', 'Television Deals', 'Television Repair', 'Wall Television Installation', 'Television Shows', 'Television Remotes', 'Televisions For Home Use']"
     categoryArray = generate_content(prompt, model=model, max_tokens=max_tokens)
     return categoryArray
 
