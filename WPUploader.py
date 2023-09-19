@@ -4,6 +4,7 @@ import json
 from wordpress import API
 from datetime import datetime
 from slugify import slugify
+import streamlit as st
 
 username = "protheus99@gmail.com"
 password = "Mroq tBu0 kLOW z0d8 oP4p 3LfA"
@@ -14,7 +15,7 @@ wordpress_header = {'Authorization': 'Basic ' + wordpress_token.decode('utf-8'),
 
 
 def createWPPost(article, title, categories):
-    print("creating wordpress post")
+    st.write("creating wordpress post")
     api_url = 'https://shop.genbc.io/wp-json/wp/v2/posts/'
     article = open(article)
     data = {
@@ -26,11 +27,11 @@ def createWPPost(article, title, categories):
     'slug' : slugify(title),
     }
     response = requests.post(api_url,headers=wordpress_header, json=data)
-    print(response.status_code)
-    print(response)
+    st.write(response.status_code)
+    st.write(response)
 
 def createWPCategory(name, parentID="None"):
-    print("creating wordpress category")
+    st.write("creating wordpress category")
     api_url = 'https://shop.genbc.io/wp-json/wp/v2/categories'
     data = {
         'name': name,
@@ -38,5 +39,5 @@ def createWPCategory(name, parentID="None"):
         'parent': parentID
     }
     response = requests.post(api_url, headers=wordpress_header, json=data)
-    print(response.status_code)
-    print(response)
+    st.write(response.status_code)
+    st.write(response)
