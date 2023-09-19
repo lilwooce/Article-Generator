@@ -23,7 +23,7 @@ wordpress_header = {'Authorization': 'Basic ' + wordpress_token.decode('utf-8'),
 def createWPPost(article, title, categories):
     st.write("creating wordpress post")
     api_url = 'https://shop.genbc.io/wp-json/wp/v2/posts/'
-    article = open(article)
+    st.write(article)
     data = {
     'title' : title,
     'content' : article.read(),
