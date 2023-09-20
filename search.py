@@ -158,6 +158,11 @@ def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
     categoryArray = generate_content(prompt, model=model, max_tokens=max_tokens)
     return categoryArray
 
+def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
+    prompt = f"Given the following query: {qry}, please provide 5 questions that people also ask. The questions must differ from eachother and must also be related to the main query provided. Also provide 5 related topics to the main topic. The topics must differ from eachother and must also be related to the main query provided Provide the questions and topics in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'fly fishing destinations' would be: ['colorado', 'wyoming', 'montana', 'alaska', 'bahamas', 'Where is fly fishing the most popular?', 'What state has best fly fishing?', Where is the best place to learn fly fishing?, What is the fly fishing capital of the world?, What is a famous quote about fly fishing?]"
+    subTopics = generate_content(prompt, model=model, max_tokens=max_tokens)
+    return subTopics
+
 def main():
     qry = st.text_input(
         "What do you want the main topic of the articles to be? v12!\n",
@@ -172,11 +177,14 @@ def main():
         mainCat = WPUploader.createWPCategory(qry)
         st.write(f"Main Category ID is {mainCat}")
         for cat in categories:
-            st.write(f"Creating article using the category {cat}")
-            subCat = WPUploader.createWPCategory(cat, mainCat)
-            a = createArticle(cat)
-            WPUploader.createWPPost(a, cat, [subCat])
-            asyncio.sleep(120)
+            subTopics = generateSubTopics(cat)
+            subTopics = literal_eval(subTopics[0])
+            st.write(subTopics)
+            #st.write(f"Creating article using the category {cat}")
+            #subCat = WPUploader.createWPCategory(cat, mainCat)
+            #a = createArticle(cat)
+            #WPUploader.createWPPost(a, cat, [subCat])
+            #asyncio.sleep(120)
         st.write()  # visualize my dataframe in the Streamlit app
     
 main()
