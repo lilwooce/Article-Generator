@@ -174,10 +174,11 @@ def main():
         categories = generateCategories(qry)
         categories = literal_eval(categories[0])
         st.write(categories)
-        mainCat = WPUploader.createWPCategory(qry)
-        st.write(f"Main Category ID is {mainCat}")
+        #mainCat = WPUploader.createWPCategory(qry)
+        #st.write(f"Main Category ID is {mainCat}")
         for cat in categories:
             subTopics = generateSubTopics(cat)
+            st.write(subTopics)
             subTopics = literal_eval(subTopics[0])
             st.write(subTopics)
             #st.write(f"Creating article using the category {cat}")
