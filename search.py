@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v34\n",
+        "What do you want the main topic of the articles to be? v35\n",
         key="query",
     )
 
@@ -176,7 +176,9 @@ def main():
         if 'chosenCategories' not in st.session_state:
                     st.session_state.chosenCategories = []
         if 'chosenTopics' not in st.session_state:
-                        st.session_state.chosenTopics = {}
+                        st.session_state.chosenTopics = []
+        if 'chosenSubTopics' not in st.session_state:
+                        st.session_state.chosenSubTopics = {}
 
         st.title(f"Articles using the seed: {qry}")  # add a title
         with st.form("Generate Categories"):
@@ -205,10 +207,11 @@ def main():
 
             with st.form(f"Sub Topic Select for: {cat}"):
                 chosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}", subTopics)
+                st.session_state.chosenTopics = chosenTopics
 
                 submitted = st.form_submit_button("Submit")
                 if submitted:
-                    st.session_state.chosenTopics[f"{cat}"] = chosenTopics
+                    st.session_state.chosenSubTopics[f"{cat}"] = st.session_state.chosenTopics
                     st.write(st.session_state.chosenTopics)
             #st.write(f"Creating article using the category {cat}")
             #subCat = WPUploader.createWPCategory(cat, mainCat)
