@@ -181,34 +181,34 @@ def main():
             if submitted:
                 st.write(st.session_state.categories)
     
-    with st.form("Category Select"):
-        choosenCategories = st.multiselect('Which of these categories would you like for the articles?', st.session_state.categories)
+        with st.form("Category Select"):
+            choosenCategories = st.multiselect('Which of these categories would you like for the articles?', st.session_state.categories)
 
-        submitted = st.form_submit_button(label="Submit")
-        if submitted:
-            if 'choosenCategories' not in st.session_state:
-                st.session_state.choosenCategories = choosenCategories
-
-    #mainCat = WPUploader.createWPCategory(qry)
-    #st.write(f"Main Category ID is {mainCat}")
-    subTopics = []
-    for cat in st.session_state.choosenCategories:
-        subTopics = generateSubTopics(cat)
-        subTopics = literal_eval(subTopics[0])
-        st.write(subTopics)
-
-        with st.form("Sub Topic Select"):
-            choosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}")
-
-            submitted = st.form_submit_button("Submit")
+            submitted = st.form_submit_button(label="Submit")
             if submitted:
-                if 'choosenTopics' not in st.session_state:
-                    st.session_state.choosenTopics = choosenTopics
-        #st.write(f"Creating article using the category {cat}")
-        #subCat = WPUploader.createWPCategory(cat, mainCat)
-        #a = createArticle(cat)
-        #WPUploader.createWPPost(a, cat, [subCat])
-        #asyncio.sleep(120)
-    st.write()  # visualize my dataframe in the Streamlit app
+                if 'choosenCategories' not in st.session_state:
+                    st.session_state.choosenCategories = choosenCategories
+
+        #mainCat = WPUploader.createWPCategory(qry)
+        #st.write(f"Main Category ID is {mainCat}")
+        subTopics = []
+        for cat in st.session_state.choosenCategories:
+            subTopics = generateSubTopics(cat)
+            subTopics = literal_eval(subTopics[0])
+            st.write(subTopics)
+
+            with st.form("Sub Topic Select"):
+                choosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}")
+
+                submitted = st.form_submit_button("Submit")
+                if submitted:
+                    if 'choosenTopics' not in st.session_state:
+                        st.session_state.choosenTopics = choosenTopics
+            #st.write(f"Creating article using the category {cat}")
+            #subCat = WPUploader.createWPCategory(cat, mainCat)
+            #a = createArticle(cat)
+            #WPUploader.createWPPost(a, cat, [subCat])
+            #asyncio.sleep(120)
+        st.write()  # visualize my dataframe in the Streamlit app
     
 main()
