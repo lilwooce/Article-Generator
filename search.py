@@ -201,6 +201,9 @@ def main():
         subTopics = []
         for cat in st.session_state.choosenCategories:
             subTopics = generateSubTopics(cat)
+            st.write(subTopics)
+            subTopics = literal_eval(subTopics[0])
+            st.write(subTopics)
 
             with st.form(f"Sub Topic Select for: {cat}"):
                 choosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}", subTopics)
