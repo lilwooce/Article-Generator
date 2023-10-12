@@ -165,29 +165,34 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v28\n",
+        "What do you want the main topic of the articles to be? v29\n",
         key="query",
     )
 
     if qry:
+        #Initialize session states
+        if 'categories' not in st.session_state:
+                st.session_state.categories = []
+        if 'choosenCategories' not in st.session_state:
+                    st.session_state.choosenCategories = choosenCategories
+        if 'choosenTopics' not in st.session_state:
+                        st.session_state.choosenTopics = choosenTopics
+
         st.title(f"Articles using the seed: {qry}")  # add a title
         with st.form("Generate Categories"):
             categories = generateCategories(qry)
             categories = literal_eval(categories[0])
-            if 'categories' not in st.session_state:
-                st.session_state.categories = categories
             
             submitted = st.form_submit_button("Generate Categories")
             if submitted:
-                st.write(st.session_state.categories)
+                st.session_state.categories = categories
     
         with st.form("Category Select"):
             choosenCategories = st.multiselect('Which of these categories would you like for the articles?', st.session_state.categories)
 
             submitted = st.form_submit_button(label="Submit")
             if submitted:
-                if 'choosenCategories' not in st.session_state:
-                    st.session_state.choosenCategories = choosenCategories
+                st.session_state.choosenCategories = choosenCategories
 
         #mainCat = WPUploader.createWPCategory(qry)
         #st.write(f"Main Category ID is {mainCat}")
@@ -198,12 +203,11 @@ def main():
             st.write(subTopics)
 
             with st.form("Sub Topic Select"):
-                choosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}")
+                choosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}", subTopics)
 
                 submitted = st.form_submit_button("Submit")
                 if submitted:
-                    if 'choosenTopics' not in st.session_state:
-                        st.session_state.choosenTopics = choosenTopics
+                    st.session_state.choosenTopics = choosenTopics
             #st.write(f"Creating article using the category {cat}")
             #subCat = WPUploader.createWPCategory(cat, mainCat)
             #a = createArticle(cat)
