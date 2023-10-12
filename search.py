@@ -164,43 +164,49 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
     return subTopics
 
 def main():
-    qry = st.text_input(
-        "What do you want the main topic of the articles to be? v25\n",
-        key="query",
-    )
+    with st.form("Article Generator"):
+        qry = st.text_input(
+            "What do you want the main topic of the articles to be? v26\n",
+            key="query",
+        )
 
-    if qry:
-        st.title(f"Article about {qry}")  # add a title
-        categories = generateCategories(qry)
-        categories = literal_eval(categories[0])
-        st.write(categories)
-        
-        with st.form("Category Select"):    
-            choosenCategories = st.multiselect('Which of these categories would you like for the articles?', categories)
+        if qry:
+            st.title(f"Article about {qry}")  # add a title
+            categories = generateCategories(qry)
+            categories = literal_eval(categories[0])
+            st.write(categories)
+            
+            with st.form("Category Select"):    
+                choosenCategories = st.multiselect('Which of these categories would you like for the articles?', categories)
 
-            submitted = st.form_submit_button(label="Submit")
-            if submitted:
-                st.write(choosenCategories)
-
-        #mainCat = WPUploader.createWPCategory(qry)
-        #st.write(f"Main Category ID is {mainCat}")
-        subTopics = []
-        for cat in choosenCategories:
-            subTopics = generateSubTopics(cat)
-            subTopics = literal_eval(subTopics[0])
-            st.write(subTopics)
-
-            with st.form("Sub Topic Select"):
-                choosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}")
-
-                submitted = st.form_submit_button("Submit")
+                submitted = st.form_submit_button(label="Submit")
                 if submitted:
-                    st.write(choosenTopics)
-            #st.write(f"Creating article using the category {cat}")
-            #subCat = WPUploader.createWPCategory(cat, mainCat)
-            #a = createArticle(cat)
-            #WPUploader.createWPPost(a, cat, [subCat])
-            #asyncio.sleep(120)
-        st.write()  # visualize my dataframe in the Streamlit app
+                    st.write(choosenCategories)
+
+            #mainCat = WPUploader.createWPCategory(qry)
+            #st.write(f"Main Category ID is {mainCat}")
+            subTopics = []
+            for cat in choosenCategories:
+                subTopics = generateSubTopics(cat)
+                subTopics = literal_eval(subTopics[0])
+                st.write(subTopics)
+
+                with st.form("Sub Topic Select"):
+                    choosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}")
+
+                    submitted = st.form_submit_button("Submit")
+                    if submitted:
+                        st.write(choosenTopics)
+                #st.write(f"Creating article using the category {cat}")
+                #subCat = WPUploader.createWPCategory(cat, mainCat)
+                #a = createArticle(cat)
+                #WPUploader.createWPPost(a, cat, [subCat])
+                #asyncio.sleep(120)
+            st.write()  # visualize my dataframe in the Streamlit app
+
+    submitted = st.form_submit_button("Submit")
+    if submitted:
+        return
+        #start generating articles
     
 main()
