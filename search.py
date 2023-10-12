@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def toTable(dict):
     r = []
-    for obj in len(dict):
+    for obj in dict:
         r.append(dict[obj])
     return r
 
