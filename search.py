@@ -159,13 +159,13 @@ def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
     return categoryArray
 
 def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
-    prompt = f"Given the following query: {qry}, please provide 5 questions that people also ask. The questions must differ from eachother and must also be related to the main query provided. Also provide 5 related topics to the main topic. The topics must differ from eachother and must also be related to the main query provided Provide the questions and topics in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'fly fishing destinations' would be: ['colorado', 'wyoming', 'montana', 'alaska', 'bahamas', 'Where is fly fishing the most popular?', 'What state has best fly fishing?', Where is the best place to learn fly fishing?, What is the fly fishing capital of the world?, What is a famous quote about fly fishing?]. The response MUST include BOTH the questions AND the topics in the format provided."
+    prompt = f"Given the following query: {qry}, please provide 5 questions that people also ask. The questions must differ from eachother and must also be related to the main query provided. Also provide 5 related topics to the main topic. The topics must differ from eachother and must also be related to the main query provided Provide the questions and topics in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'fly fishing destinations' would be: ['colorado', 'wyoming', 'montana', 'alaska', 'bahamas', 'Where is fly fishing the most popular?', 'What state has best fly fishing?', Where is the best place to learn fly fishing?, What is the fly fishing capital of the world?, What is a famous quote about fly fishing?]. The response MUST include BOTH the questions AND the topics in the format provided. ENSURE THAT THE FORMATTING IS PROPER AND THERE ARE NO EXTRA BRACKETS/QUOTATION MARKS OR ANYTHING OF THE SORT"
     subTopics = generate_content(prompt, model=model, max_tokens=max_tokens)
     return subTopics
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v32\n",
+        "What do you want the main topic of the articles to be? v33\n",
         key="query",
     )
 
@@ -210,14 +210,21 @@ def main():
 
                 submitted = st.form_submit_button("Submit")
                 if submitted:
-                    for top in choosenTopics:
-                        st.session_state.choosenTopics[f"{cat}"] = choosenTopics
-                        st.write(st.session_state.choosenTopics)
+                    st.session_state.choosenTopics[f"{cat}"] = choosenTopics
+                    st.write(st.session_state.choosenTopics)
             #st.write(f"Creating article using the category {cat}")
             #subCat = WPUploader.createWPCategory(cat, mainCat)
             #a = createArticle(cat)
             #WPUploader.createWPPost(a, cat, [subCat])
             #asyncio.sleep(120)
+        
+        with st.form("Review Data"):
+             submitted = st.form_submit_button("Review Data")
+
+             if submitted:
+                  st.write("Generated Categories are ", st.session_state.categories)
+                  st.write("Chosen Categories are ", st.session_state.choosenCategories)
+                  st.write("Chosen Sub Topics are ", st.session_state.choosenTopics)
         st.write()  # visualize my dataframe in the Streamlit app
     
 main()
