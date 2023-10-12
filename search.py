@@ -171,14 +171,15 @@ def toTable(dict):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v16\n",
+        "What do you want the main topic of the articles to be? v17\n",
         key="query",
     )
 
     if qry:
         st.title(f"Article about {qry}")  # add a title
         categories = generateCategories(qry)
-        categories = toTable(literal_eval(categories[0]))
+        categories = literal_eval(categories[0])
+        toTable(categories)
         st.write(categories)
         
         with st.form("Category Select"):
