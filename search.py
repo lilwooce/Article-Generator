@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v36\n",
+        "What do you want the main topic of the articles to be? v37\n",
         key="query",
     )
 
@@ -207,6 +207,7 @@ def main():
 
             with st.form(f"Sub Topic Select for: {cat}"):
                 chosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}", subTopics)
+                st.write(chosenTopics)
                 
 
                 submitted = st.form_submit_button("Submit")
