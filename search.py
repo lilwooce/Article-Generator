@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v38\n",
+        "What do you want the main topic of the articles to be? v39\n",
         key="query",
     )
 
@@ -200,7 +200,7 @@ def main():
 
         #mainCat = WPUploader.createWPCategory(qry)
         #st.write(f"Main Category ID is {mainCat}")
-        subTopics = []
+        chosenTopics = []
         for cat in st.session_state.chosenCategories:
             subTopics = generateSubTopics(cat)
             subTopics = literal_eval(subTopics[0])
