@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v33\n",
+        "What do you want the main topic of the articles to be? v34\n",
         key="query",
     )
 
@@ -173,10 +173,10 @@ def main():
         #Initialize session states
         if 'categories' not in st.session_state:
                 st.session_state.categories = []
-        if 'choosenCategories' not in st.session_state:
-                    st.session_state.choosenCategories = []
-        if 'choosenTopics' not in st.session_state:
-                        st.session_state.choosenTopics = []
+        if 'chosenCategories' not in st.session_state:
+                    st.session_state.chosenCategories = []
+        if 'chosenTopics' not in st.session_state:
+                        st.session_state.chosenTopics = {}
 
         st.title(f"Articles using the seed: {qry}")  # add a title
         with st.form("Generate Categories"):
@@ -189,27 +189,27 @@ def main():
                 st.write(st.session_state.categories)
     
         with st.form("Category Select"):
-            choosenCategories = st.multiselect('Which of these categories would you like for the articles?', st.session_state.categories)
+            chosenCategories = st.multiselect('Which of these categories would you like for the articles?', st.session_state.categories)
 
             submitted = st.form_submit_button(label="Submit")
             if submitted:
-                st.session_state.choosenCategories = choosenCategories
-                st.write(st.session_state.choosenCategories)
+                st.session_state.chosenCategories = chosenCategories
+                st.write(st.session_state.chosenCategories)
 
         #mainCat = WPUploader.createWPCategory(qry)
         #st.write(f"Main Category ID is {mainCat}")
         subTopics = []
-        for cat in st.session_state.choosenCategories:
+        for cat in st.session_state.chosenCategories:
             subTopics = generateSubTopics(cat)
             subTopics = literal_eval(subTopics[0])
 
             with st.form(f"Sub Topic Select for: {cat}"):
-                choosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}", subTopics)
+                chosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}", subTopics)
 
                 submitted = st.form_submit_button("Submit")
                 if submitted:
-                    st.session_state.choosenTopics[f"{cat}"] = choosenTopics
-                    st.write(st.session_state.choosenTopics)
+                    st.session_state.chosenTopics[f"{cat}"] = chosenTopics
+                    st.write(st.session_state.chosenTopics)
             #st.write(f"Creating article using the category {cat}")
             #subCat = WPUploader.createWPCategory(cat, mainCat)
             #a = createArticle(cat)
@@ -221,8 +221,8 @@ def main():
 
              if submitted:
                   st.write("Generated Categories are ", st.session_state.categories)
-                  st.write("Chosen Categories are ", st.session_state.choosenCategories)
-                  st.write("Chosen Sub Topics are ", st.session_state.choosenTopics)
+                  st.write("Chosen Categories are ", st.session_state.chosenCategories)
+                  st.write("Chosen Sub Topics are ", st.session_state.chosenTopics)
         st.write()  # visualize my dataframe in the Streamlit app
     
 main()
