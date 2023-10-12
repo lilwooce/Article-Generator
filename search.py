@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v42\n",
+        "What do you want the main topic of the articles to be? v43\n",
         key="query",
     )
 
@@ -175,8 +175,6 @@ def main():
                 st.session_state.categories = []
         if 'chosenCategories' not in st.session_state:
                     st.session_state.chosenCategories = []
-        if 'chosenTopics' not in st.session_state:
-                        st.session_state.chosenTopics = []
         if 'chosenSubTopics' not in st.session_state:
                         st.session_state.chosenSubTopics = {}
 
@@ -206,11 +204,13 @@ def main():
             subTopics = literal_eval(subTopics[0])
 
             with st.form(f"Sub Topic Select for: {cat}"):
-                chosenTopics  = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}", subTopics, key=cat)
+                if 'chosenTopics' not in st.session_state:
+                        st.session_state.chosenTopics = []
+
+                st.session_state.chosenTopics  = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}", subTopics, key=cat)
 
                 submitted = st.form_submit_button(f"Submit {cat} Topics")
                 if submitted:
-                    st.session_state.chosenTopics = chosenTopics
                     st.session_state.chosenSubTopics[f"{cat}"] = st.session_state.chosenTopics
                     st.write(st.session_state.chosenTopics)
             #st.write(f"Creating article using the category {cat}")
