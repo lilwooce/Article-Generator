@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v45\n",
+        "What do you want the main topic of the articles to be? v46\n",
         key="query",
     )
 
@@ -176,20 +176,19 @@ def main():
         if 'chosenCategories' not in st.session_state:
             st.session_state.chosenCategories = []
         if 'chosenTopics' not in st.session_state:
-            st.session_state.chosenTopics = []
+            st.session_state.subTopics = []
         if 'chosenSubTopics' not in st.session_state:
             st.session_state.chosenSubTopics = {}
 
         st.title(f"Articles using the seed: {qry}")  # add a title
-        for x in range(3):
-            with st.form(f"Generate Categories {x}"):
-                categories = generateCategories(qry)
-                categories = literal_eval(categories[0])
-                
-                submitted = st.form_submit_button("Generate Categories")
-                if submitted:
-                    st.session_state.categories = categories
-                    st.write(st.session_state.categories)
+        with st.form("Generate Categories"):
+            categories = generateCategories(qry)
+            categories = literal_eval(categories[0])
+            
+            submitted = st.form_submit_button("Generate Categories")
+            if submitted:
+                st.session_state.categories = categories
+                st.write(st.session_state.categories)
     
         with st.form("Category Select"):
             chosenCategories = st.multiselect('Which of these categories would you like for the articles?', st.session_state.categories)
@@ -203,16 +202,16 @@ def main():
         #st.write(f"Main Category ID is {mainCat}")
         for cat in st.session_state.chosenCategories:
             subTopics = generateSubTopics(cat)
-            subTopics = literal_eval(subTopics[0])
+            st.session_state.subTopics.extend(literal_eval(subTopics[0]))
             st.write(subTopics)
 
             with st.form(f"Sub Topic Select for: {cat}"):
-                st.session_state.chosenTopics  = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}", subTopics, key=cat)
+                chosenTopics  = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}", subTopics)
 
-                submitted = st.form_submit_button(f"Submit {cat} Topics")
+                submitted = st.form_submit_button(label=f"Submit {cat} Topics")
                 if submitted:
-                    st.session_state.chosenSubTopics[f"{cat}"] = st.session_state.chosenTopics
-                    st.write(st.session_state.chosenTopics)
+                    st.session_state.chosenSubTopics[f"{cat}"] = chosenTopics
+                    st.write(st.session_state.chosenSubTopics)
             #st.write(f"Creating article using the category {cat}")
             #subCat = WPUploader.createWPCategory(cat, mainCat)
             #a = createArticle(cat)
