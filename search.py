@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v24\n",
+        "What do you want the main topic of the articles to be? v25\n",
         key="query",
     )
 
@@ -174,21 +174,28 @@ def main():
         categories = generateCategories(qry)
         categories = literal_eval(categories[0])
         st.write(categories)
-        choosenCategories = st.multiselect('Which of these categories would you like for the articles?', categories)
-        st.write(choosenCategories)
-        #with st.form("Category Select"):    
-           #submitted = st.form_submit_button("Submit")
-            #if submitted:
-                
+        
+        with st.form("Category Select"):    
+            choosenCategories = st.multiselect('Which of these categories would you like for the articles?', categories)
+
+            submitted = st.form_submit_button(label="Submit")
+            if submitted:
+                st.write(choosenCategories)
 
         #mainCat = WPUploader.createWPCategory(qry)
         #st.write(f"Main Category ID is {mainCat}")
         subTopics = []
         for cat in choosenCategories:
             subTopics = generateSubTopics(cat)
-            #st.write(subTopics)
             subTopics = literal_eval(subTopics[0])
             st.write(subTopics)
+
+            with st.form("Sub Topic Select"):
+                choosenTopics = st.multiselect(f"Which of these Sub Topics would you like for the category: {cat}")
+
+                submitted = st.form_submit_button("Submit")
+                if submitted:
+                    st.write(choosenTopics)
             #st.write(f"Creating article using the category {cat}")
             #subCat = WPUploader.createWPCategory(cat, mainCat)
             #a = createArticle(cat)
