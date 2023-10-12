@@ -174,9 +174,9 @@ def main():
         if 'categories' not in st.session_state:
                 st.session_state.categories = []
         if 'choosenCategories' not in st.session_state:
-                    st.session_state.choosenCategories = choosenCategories
+                    st.session_state.choosenCategories = []
         if 'choosenTopics' not in st.session_state:
-                        st.session_state.choosenTopics = choosenTopics
+                        st.session_state.choosenTopics = []
 
         st.title(f"Articles using the seed: {qry}")  # add a title
         with st.form("Generate Categories"):
