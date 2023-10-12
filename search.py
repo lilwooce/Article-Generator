@@ -163,10 +163,15 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
     subTopics = generate_content(prompt, model=model, max_tokens=max_tokens)
     return subTopics
 
+def toTable(dict):
+    r = []
+    for obj in len(dict):
+        r.append(dict[obj])
+    return r
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v19\n",
+        "What do you want the main topic of the articles to be? v20\n",
         key="query",
     )
 
@@ -175,6 +180,7 @@ def main():
         categories = generateCategories(qry)
         st.write(categories)
         categories = literal_eval(categories[0])
+        toTable(categories)
         st.write(categories)
         
         with st.form("Category Select"):
