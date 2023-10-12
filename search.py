@@ -203,10 +203,9 @@ def main():
                 #WPUploader.createWPPost(a, cat, [subCat])
                 #asyncio.sleep(120)
             st.write()  # visualize my dataframe in the Streamlit app
-
-    submitted = st.form_submit_button("Submit")
-    if submitted:
-        return
-        #start generating articles
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            return
+            #start generating articles
     
 main()
