@@ -166,12 +166,12 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 def toTable(dict):
     r = []
     for obj in len(dict):
-        r.append(obj)
+        r.append(dict[obj])
     return r
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v17\n",
+        "What do you want the main topic of the articles to be? v18\n",
         key="query",
     )
 
