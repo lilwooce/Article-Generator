@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v30\n",
+        "What do you want the main topic of the articles to be? v31\n",
         key="query",
     )
 
@@ -208,7 +208,7 @@ def main():
 
                 submitted = st.form_submit_button("Submit")
                 if submitted:
-                    st.session_state.choosenTopics = choosenTopics
+                    st.session_state.choosenTopics.append(choosenTopics)
                     st.write(st.session_state.choosenTopics)
             #st.write(f"Creating article using the category {cat}")
             #subCat = WPUploader.createWPCategory(cat, mainCat)
