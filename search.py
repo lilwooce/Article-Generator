@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v66\n",
+        "What do you want the main topic of the articles to be? v67\n",
         key="query",
     )
 
@@ -182,8 +182,11 @@ def main():
 
         st.title(f"Articles using the seed: {qry}")  # add a title
         with st.form("Generate Categories"):
-            categories = generateCategories(qry)
-            categories = literal_eval(categories[0])
+            try:
+                categories = generateCategories(qry)
+                categories = literal_eval(categories[0])
+            except:     
+                st.write("List formatting went wrong")
             
             submitted = st.form_submit_button("Generate Categories")
             if submitted:
@@ -199,8 +202,12 @@ def main():
                 st.write(st.session_state.chosenCategories)
 
         for cat in st.session_state.chosenCategories: #create all of the topics here
-            subTopics = generateSubTopics(cat)
-            subTopics = literal_eval(subTopics[0])
+            try:
+                subTopics = generateSubTopics(cat)
+                subTopics = literal_eval(subTopics[0])
+            except:
+                st.write("Formatting of List was wrong")
+
             
             with st.form(f"Are these {cat} sub topics fine with you?"):
                 st.write(subTopics)
