@@ -201,7 +201,7 @@ def main():
         #mainCat = WPUploader.createWPCategory(qry)
         #st.write(f"Main Category ID is {mainCat}")
         cat = st.session_state.chosenCategories[0]
-        with st.form(f"Sub Topic Select for: {cat}"):
+        with st.form("Sub Topic Select"):
             subTopics = generateSubTopics(cat)
             st.write(subTopics)
             subTopics = literal_eval(subTopics[0])
