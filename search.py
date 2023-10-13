@@ -201,12 +201,9 @@ def main():
         #mainCat = WPUploader.createWPCategory(qry)
         #st.write(f"Main Category ID is {mainCat}")
         for cat in st.session_state.chosenCategories:
-            subTopics = generateSubTopics(cat)
-            st.write(subTopics)
-            subTopics = literal_eval(subTopics[0])
-            st.write(subTopics)
-
             with st.form(f"Sub Topic Select for: {cat}"):
+                subTopics = generateSubTopics(cat)
+                subTopics = literal_eval(subTopics[0])
                 chosenTopics  = st.multiselect("Which of these Sub Topics would you like", options=subTopics, key=cat)
 
                 submitted = st.form_submit_button(label="Submit Topics")
