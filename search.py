@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v67\n",
+        "What do you want the main topic of the articles to be? v68\n",
         key="query",
     )
 
@@ -249,7 +249,9 @@ def main():
                         st.write(subCat)
                         if subCat == cat:
                             st.write("Found the correct sub topic")
-                            st.write(subCat[cat])
+                            st.write(st.session_state.chosenSubTopics[cat])
+                            for topic in st.session_state.chosenSubTopics[cat]:
+                                st.write(f'current topic is {topic}')
                             #a = createArticle(subCat[cat])
                             #WPUploader.createWPPost(a, subCat, [category])
                             #asyncio.sleep(120)
