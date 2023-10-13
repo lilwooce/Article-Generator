@@ -255,7 +255,6 @@ def main():
                             #a = createArticle(subCat[cat])
                             #WPUploader.createWPPost(a, subCat, [category])
                             #asyncio.sleep(120)
-                            return
 
         st.write()  # visualize my dataframe in the Streamlit app
     
