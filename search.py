@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v49\n",
+        "What do you want the main topic of the articles to be? v50\n",
         key="query",
     )
 
@@ -188,7 +188,6 @@ def main():
             submitted = st.form_submit_button("Generate Categories")
             if submitted:
                 st.session_state.categories = categories
-                st.write(st.session_state.categories)
     
         with st.form("Category Select"):
             chosenCategories = st.multiselect('Which of these categories would you like for the articles?', st.session_state.categories)
@@ -196,16 +195,13 @@ def main():
             submitted = st.form_submit_button(label="Submit")
             if submitted:
                 st.session_state.chosenCategories = chosenCategories
-                st.write(st.session_state.chosenCategories)
 
         #mainCat = WPUploader.createWPCategory(qry)
         #st.write(f"Main Category ID is {mainCat}")
         for cat in st.session_state.chosenCategories:
             subTopics = generateSubTopics(cat)
             subTopics = literal_eval(subTopics[0])
-            st.write(subTopics)
             st.session_state.subTopics.extend(subTopics)
-            st.write(st.session_state.subTopics)
 
             with st.form(f"Sub Topic Select for: {cat}"):
                 chosenTopics  = st.multiselect("Which of these Sub Topics would you like", options=subTopics, key=cat)
@@ -214,8 +210,6 @@ def main():
                 if submitted:
                     st.session_state.chosenTopics = chosenTopics
                     st.session_state.chosenSubTopics[f"{cat}"] = chosenTopics
-                    st.write(st.session_state.chosenTopics)
-                    st.write(st.session_state.chosenSubTopics)
             #st.write(f"Creating article using the category {cat}")
             #subCat = WPUploader.createWPCategory(cat, mainCat)
             #a = createArticle(cat)
