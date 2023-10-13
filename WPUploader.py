@@ -33,11 +33,10 @@ def createWPPost(article, title, categories):
     }
     
     response = requests.post(api_url, headers=wordpress_header, json=data)
-    st.write(f'response links are: [{response.links}]\n response urls are [{response.url}]')
     if response.status_code == 201:
         post = json.loads(response.text)
         st.write(f"Post '{title}' created successfully")
-        st.write(f"The link to the {title} post is https://shop.genbc.io/wp-json/wp/v2/post?{post['id']}")
+        st.write(f"The link to the {title} post is {post['link']}")
         return post['id']
     else:
         st.write(f"Failed to create post '{title}': {response.text}")
