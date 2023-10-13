@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v57\n",
+        "What do you want the main topic of the articles to be? v58\n",
         key="query",
     )
 
@@ -209,7 +209,7 @@ def main():
             submitted = st.form_submit_button(label="Submit Topics")
             if submitted:
                 st.session_state.chosenTopics = chosenTopics
-                st.session_state.chosenSubTopics[f"{cat}"] = chosenTopics
+                st.session_state.chosenSubTopics[f"{cat}"] = subTopicRecieved[0]
                 st.write(st.session_state.chosenTopics)
                 st.write(st.session_state.chosenSubTopics)
 
