@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v65\n",
+        "What do you want the main topic of the articles to be? v66\n",
         key="query",
     )
 
@@ -207,13 +207,13 @@ def main():
                 submitted = st.form_submit_button(label=f"Submit {cat} Topics")
 
                 if submitted:
-                    if f'{cat}Topic' not in st.session_state:
-                        st.session_state[f'{cat} Topic'] = [] 
-                    st.session_state[f'{cat} Topic'] = subTopics
+                    if cat not in st.session_state:
+                        st.session_state[cat] = [] 
+                    st.session_state[cat] = subTopics
                 
         for cat in st.session_state.chosenCategories: #choose the topics here
             with st.form(f"Sub Topic Select for: {cat}"):
-                chosenTopics  = st.multiselect(f"Which of these {cat} Sub Topics would you like", st.session_state[f'{cat} Topic'])
+                chosenTopics  = st.multiselect(f"Which of these {cat} Sub Topics would you like", st.session_state[cat])
 
                 submitted = st.form_submit_button(label="Submit Topics")
                 if submitted:
@@ -242,6 +242,7 @@ def main():
                         st.write(subCat)
                         if subCat == cat:
                             st.write("Found the correct sub topic")
+                            st.write(subCat[cat])
                             #a = createArticle(subCat[cat])
                             #WPUploader.createWPPost(a, subCat, [category])
                             #asyncio.sleep(120)
