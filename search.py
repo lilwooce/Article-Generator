@@ -209,12 +209,12 @@ def main():
 
                 if submitted:
                     if f'{cat}Topic' not in st.session_state:
-                        st.session_state[f'{cat}Topic'] = [] 
+                        st.session_state[f'{cat} Topic'] = [] 
                     st.session_state[f'{cat}Topic'] = subTopics
                 
         for cat in st.session_state.chosenCategories: #choose the topics here
             with st.form(f"Sub Topic Select for: {cat}"):
-                chosenTopics  = st.multiselect("Which of these Sub Topics would you like", st.session_state[f'{cat}Topic'])
+                chosenTopics  = st.multiselect("Which of these Sub Topics would you like", st.session_state[f'{cat} Topic'])
 
                 submitted = st.form_submit_button(label="Submit Topics")
                 if submitted:
