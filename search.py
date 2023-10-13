@@ -163,22 +163,32 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
     subTopicSent = generate_content(prompt, model=model, max_tokens=max_tokens)
     return subTopicSent
 
+def initializeSession():
+    if 'categories' not in st.session_state:
+        st.session_state.categories = []
+    if 'chosenCategories' not in st.session_state:
+        st.session_state.chosenCategories = []
+    if 'chosenTopics' not in st.session_state:
+        st.session_state.subTopics = []
+    if 'chosenSubTopics' not in st.session_state:
+        st.session_state.chosenSubTopics = {}
+
+def resetSession():
+    st.session_state.categories = []
+    st.session_state.chosenCategories = []
+    st.session_state.subTopics = []
+    st.session_state.chosenSubTopics = {}
+
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v68\n",
+        "What do you want the main topic of the articles to be? v69\n",
         key="query",
     )
+    resetData = st.button("Reset Session Data", on_click=resetSession)
 
     if qry:
         #Initialize session states
-        if 'categories' not in st.session_state:
-            st.session_state.categories = []
-        if 'chosenCategories' not in st.session_state:
-            st.session_state.chosenCategories = []
-        if 'chosenTopics' not in st.session_state:
-            st.session_state.subTopics = []
-        if 'chosenSubTopics' not in st.session_state:
-            st.session_state.chosenSubTopics = {}
+        initializeSession()
 
         st.title(f"Articles using the seed: {qry}")  # add a title
         with st.form("Generate Categories"):
@@ -252,9 +262,10 @@ def main():
                             st.write(st.session_state.chosenSubTopics[cat])
                             for topic in st.session_state.chosenSubTopics[cat]:
                                 st.write(f'current topic is {topic}')
-                            #a = createArticle(subCat[cat])
-                            #WPUploader.createWPPost(a, subCat, [category])
-                            #asyncio.sleep(120)
+                            a = createArticle(subCat[cat])
+                            p = WPUploader.createWPPost(a, subCat, [category])
+                            st.write(f"The link to the {subCat} post is {p.link}")
+                            asyncio.sleep(120)
 
         st.write()  # visualize my dataframe in the Streamlit app
     
