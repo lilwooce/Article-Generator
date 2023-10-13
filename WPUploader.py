@@ -45,8 +45,7 @@ def createWPPost(article, title, categories):
 def createWPCategory(name, parentID=None):
     # Check if the category already exists
     url = f'https://shop.genbc.io/wp-json/wp/v2/categories?search={name}'
-    response = requests.get(url, auth=(username, password))
-    st.write(f"response for category creation returns {response.status_code} \n the actual response is {response}\n and the content is {response.content}")
+    response = requests.get(url, headers=wordpress_header)
     
     if response.status_code == 200:
         categories = json.loads(response.text)
