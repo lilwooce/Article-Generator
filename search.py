@@ -165,7 +165,7 @@ def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v58\n",
+        "What do you want the main topic of the articles to be? v55\n",
         key="query",
     )
 
@@ -200,23 +200,9 @@ def main():
 
         #mainCat = WPUploader.createWPCategory(qry)
         #st.write(f"Main Category ID is {mainCat}")
-        cat = st.session_state.chosenCategories[0]
-        with st.form("Sub Topic Select"):
-            subTopicRecieved = generateSubTopics(cat)
-            subTopicRecieved = literal_eval(subTopicRecieved[0])
-            chosenTopics  = st.multiselect("Which of these Sub Topics would you like", subTopicRecieved)
-
-            submitted = st.form_submit_button(label="Submit Topics")
-            if submitted:
-                st.session_state.chosenTopics = chosenTopics
-                st.session_state.chosenSubTopics[f"{cat}"] = subTopicRecieved[0]
-                st.write(st.session_state.chosenTopics)
-                st.write(st.session_state.chosenSubTopics)
-
-        '''for cat in st.session_state.chosenCategories:
+        for cat in st.session_state.chosenCategories:
             with st.form(f"Sub Topic Select for: {cat}"):
                 subTopics = generateSubTopics(cat)
-                st.write(subTopics)
                 subTopics = literal_eval(subTopics[0])
                 st.write(subTopics)
                 chosenTopics  = st.multiselect("Which of these Sub Topics would you like", options=subTopics, key=cat)
@@ -226,7 +212,7 @@ def main():
                     st.session_state.chosenTopics = chosenTopics
                     st.session_state.chosenSubTopics[f"{cat}"] = chosenTopics
                     st.write(st.session_state.chosenTopics)
-                    st.write(st.session_state.chosenSubTopics)'''
+                    st.write(st.session_state.chosenSubTopics)
             #st.write(f"Creating article using the category {cat}")
             #subCat = WPUploader.createWPCategory(cat, mainCat)
             #a = createArticle(cat)
