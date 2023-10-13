@@ -262,9 +262,9 @@ def main():
                             st.write(st.session_state.chosenSubTopics[cat])
                             for topic in st.session_state.chosenSubTopics[cat]:
                                 st.write(f'current topic is {topic}')
-                            a = createArticle(subCat[cat])
-                            p = WPUploader.createWPPost(a, subCat, [category])
-                            st.write(f"The link to the {subCat} post is {p.link}")
+                            a = createArticle(topic)
+                            p = WPUploader.createWPPost(a, topic, [category])
+                            st.write(f"The link to the {topic} post is {p.link}")
                             asyncio.sleep(120)
 
         st.write()  # visualize my dataframe in the Streamlit app
