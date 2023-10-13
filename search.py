@@ -265,8 +265,6 @@ def main():
                                 st.write(f'current topic is {topic}')
                                 a = createArticle(topic)
                                 p = WPUploader.createWPPost(a, topic, [category])
-                                
-                                st.write(f"The link to the {topic} post is https://shop.genbc.io/wp-json/wp/v2/post?search={topic}")
                                 asyncio.sleep(120)
 
         st.write()  # visualize my dataframe in the Streamlit app
