@@ -207,7 +207,7 @@ def main():
             subTopicRecieved = literal_eval(subTopicRecieved[0])
             st.write(subTopicRecieved)
             chosenTopics  = st.multiselect("Which of these Sub Topics would you like", options=subTopicRecieved, key=cat)
-
+            st.write(chosenTopics)
             submitted = st.form_submit_button(label="Submit Topics")
             if submitted:
                 st.session_state.chosenTopics = chosenTopics
