@@ -160,12 +160,12 @@ def generateCategories(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
 
 def generateSubTopics(qry, model="gpt-3.5-turbo-16k", max_tokens=500):
     prompt = f"Given the following query: {qry}, please provide 5 questions that people also ask. The questions must differ from eachother and must also be related to the main query provided. Also provide 5 related topics to the main topic. The topics must differ from eachother and must also be related to the main query provided Provide the questions and topics in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, the output should be formatted in this way: ['colorado', 'wyoming', 'montana', 'alaska', 'bahamas', 'Where is fly fishing the most popular?', 'What state has best fly fishing?', Where is the best place to learn fly fishing?, What is the fly fishing capital of the world?, What is a famous quote about fly fishing?]. The response MUST include BOTH the questions AND the topics in the format provided. ENSURE THAT THE FORMATTING IS PROPER AND THERE ARE NO EXTRA BRACKETS/QUOTATION MARKS OR ANYTHING OF THE SORT. ALSO ENSURE THAT THERE ARE NO QUOTATION MARKS IN THE QUESTIONS THEMSELVES EX: won't should be changed to wont. IF THERE ARE THEY MUST BE REMOVED."
-    subTopics = generate_content(prompt, model=model, max_tokens=max_tokens)
-    return subTopics
+    subTopicSent = generate_content(prompt, model=model, max_tokens=max_tokens)
+    return subTopicSent
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v55\n",
+        "What do you want the main topic of the articles to be? v56\n",
         key="query",
     )
 
@@ -202,11 +202,11 @@ def main():
         #st.write(f"Main Category ID is {mainCat}")
         cat = st.session_state.chosenCategories[0]
         with st.form("Sub Topic Select"):
-            subTopics = generateSubTopics(cat)
-            st.write(subTopics)
-            subTopics = literal_eval(subTopics[0])
-            st.write(subTopics)
-            chosenTopics  = st.multiselect("Which of these Sub Topics would you like", options=subTopics, key=cat)
+            subTopicRecieved = generateSubTopics(cat)
+            st.write(subTopicRecieved)
+            subTopicRecieved = literal_eval(subTopicRecieved[0])
+            st.write(subTopicRecieved)
+            chosenTopics  = st.multiselect("Which of these Sub Topics would you like", options=subTopicRecieved, key=cat)
 
             submitted = st.form_submit_button(label="Submit Topics")
             if submitted:
