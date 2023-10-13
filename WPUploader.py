@@ -23,7 +23,6 @@ wordpress_header = {'Authorization': 'Basic ' + wordpress_token.decode('utf-8'),
 def createWPPost(article, title, categories):
     st.write("creating wordpress post")
     api_url = 'https://shop.genbc.io/wp-json/wp/v2/posts/'
-    st.write(article)
     data = {
     'title' : title,
     'content' : article,
@@ -34,6 +33,7 @@ def createWPPost(article, title, categories):
     }
     
     response = requests.post(api_url, headers=wordpress_header, json=data)
+    st.write(f'response links are: [{response.links}]\n response urls are [{response.url}]')
     if response.status_code == 201:
         category = json.loads(response.text)
         st.write(f"Post '{title}' created successfully")
@@ -46,6 +46,7 @@ def createWPCategory(name, parentID=None):
     # Check if the category already exists
     url = f'https://shop.genbc.io/wp-json/wp/v2/categories?search={name}'
     response = requests.get(url, auth=(username, password))
+    st.write(f"response for category creation returns {response.status_code} \n the actual response is {response}\n and the content is {response.content}")
     
     if response.status_code == 200:
         categories = json.loads(response.text)

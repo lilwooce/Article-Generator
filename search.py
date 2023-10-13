@@ -251,8 +251,9 @@ def main():
             submitted = st.form_submit_button("Generate Articles and Categories")
 
             if submitted:
+                mainCat = WPUploader.createWPCategory(qry)
                 for cat in st.session_state.chosenCategories:
-                    category = WPUploader.createWPCategory(cat)
+                    category = WPUploader.createWPCategory(cat, mainCat)
                     st.write(f"Main Category ID is {category}")
                     st.write(f"Creating article using the category {cat}")
                     for subCat in st.session_state.chosenSubTopics:
@@ -264,6 +265,7 @@ def main():
                                 st.write(f'current topic is {topic}')
                             a = createArticle(topic)
                             p = WPUploader.createWPPost(a, topic, [category])
+                            
                             st.write(f"The link to the {topic} post is {p.link}")
                             asyncio.sleep(120)
 
