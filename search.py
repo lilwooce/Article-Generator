@@ -186,7 +186,7 @@ def resetSession():
 
 def main():
     qry = st.text_input(
-        "What do you want the main topic of the articles to be? v70\n",
+        "What do you want the main topic of the articles to be? v73\n",
         key="query",
     )
     resetData = st.button("Reset Session Data", on_click=resetSession)
@@ -208,7 +208,7 @@ def main():
         st.title(f"Articles using the seed: {qry}")  # add a title
         with st.form("Generate Categories"):
             try:
-                categories = generateCategories(qry, st.session_state.numCategories)
+                categories = generateCategories(qry)
                 categories = literal_eval(categories[0])
             except:     
                 st.write("List formatting went wrong")
@@ -228,7 +228,7 @@ def main():
 
         for cat in st.session_state.chosenCategories: #create all of the topics here
             try:
-                subTopics = generateSubTopics(cat, st.session_state.numArticles)
+                subTopics = generateSubTopics(cat)
                 subTopics = literal_eval(subTopics[0])
             except:
                 st.write("Formatting of List was wrong")
