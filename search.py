@@ -154,12 +154,12 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_to
     return final_draft
 
 def generateCategories(qry, numCats, model="gpt-3.5-turbo-16k", max_tokens=500):
-    prompt = f"Given the following query: {qry}, please provide {numCats} categories that would fit into a wordpress article of the same topic. The topics must differ from eachother and must also be related to the main query provided. Provide the categories in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'television' would be: ['Television Stores', 'Television Deals', 'Television Repair', 'Wall Television Installation', 'Television Shows', 'Television Remotes', 'Televisions For Home Use'] The response MUST include BOTH the questions AND the topics in the format provided. ENSURE THAT THE FORMATTING IS PROPER AND THERE ARE NO EXTRA BRACKETS/QUOTATION MARKS OR ANYTHING OF THE SORT. ALSO ENSURE THAT THERE ARE NO QUOTATION MARKS IN THE QUESTIONS THEMSELVES EX: won't should be changed to wont. IF THERE ARE THEY MUST BE REMOVED."
+    prompt = f"Given the following query: {qry}, please provide 5 categories that would fit into a wordpress article of the same topic. The topics must differ from eachother and must also be related to the main query provided. Provide the categories in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'television' would be: ['Television Stores', 'Television Deals', 'Television Repair', 'Wall Television Installation', 'Television Shows', 'Television Remotes', 'Televisions For Home Use'] The response MUST include BOTH the questions AND the topics in the format provided. ENSURE THAT THE FORMATTING IS PROPER AND THERE ARE NO EXTRA BRACKETS/QUOTATION MARKS OR ANYTHING OF THE SORT. ALSO ENSURE THAT THERE ARE NO QUOTATION MARKS IN THE QUESTIONS THEMSELVES EX: won't should be changed to wont. IF THERE ARE THEY MUST BE REMOVED."
     categoryArray = generate_content(prompt, model=model, max_tokens=max_tokens)
     return categoryArray
 
 def generateSubTopics(qry, numArticles, model="gpt-3.5-turbo-16k", max_tokens=500): 
-    prompt = f"Given the following query: {qry}, please provide {numArticles} questions that people also ask. The questions must differ from eachother and must also be related to the main query provided. Also provide 5 related topics to the main topic. The topics must differ from eachother and must also be related to the main query provided Provide the questions and topics in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'fly fishing in colorado' would be: ['colorado', 'wyoming', 'montana', 'alaska', 'bahamas', 'Where is fly fishing the most popular?', 'What state has best fly fishing?', Where is the best place to learn fly fishing?, What is the fly fishing capital of the world?, What is a famous quote about fly fishing?]. The response MUST include BOTH the questions AND the topics in the format provided. ENSURE THAT THE FORMATTING IS PROPER AND THERE ARE NO EXTRA BRACKETS/QUOTATION MARKS OR ANYTHING OF THE SORT. ALSO ENSURE THAT THERE ARE NO QUOTATION MARKS IN THE QUESTIONS THEMSELVES EX: won't should be changed to wont. IF THERE ARE THEY MUST BE REMOVED. MAKE SURE THAT THE FINAL RESULT IS PURELY THE ARRAY OF SUB TOPICS AND THERE IS NO EXTRA TEXT SUCH AS, questions = [array of text]."
+    prompt = f"Given the following query: {qry}, please provide 5 questions that people also ask. The questions must differ from eachother and must also be related to the main query provided. Also provide 5 related topics to the main topic. The topics must differ from eachother and must also be related to the main query provided Provide the questions and topics in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'fly fishing in colorado' would be: ['colorado', 'wyoming', 'montana', 'alaska', 'bahamas', 'Where is fly fishing the most popular?', 'What state has best fly fishing?', Where is the best place to learn fly fishing?, What is the fly fishing capital of the world?, What is a famous quote about fly fishing?]. The response MUST include BOTH the questions AND the topics in the format provided. ENSURE THAT THE FORMATTING IS PROPER AND THERE ARE NO EXTRA BRACKETS/QUOTATION MARKS OR ANYTHING OF THE SORT. ALSO ENSURE THAT THERE ARE NO QUOTATION MARKS IN THE QUESTIONS THEMSELVES EX: won't should be changed to wont. IF THERE ARE THEY MUST BE REMOVED. MAKE SURE THAT THE FINAL RESULT IS PURELY THE ARRAY OF SUB TOPICS AND THERE IS NO EXTRA TEXT SUCH AS, questions = [array of text]."
     subTopicSent = generate_content(prompt, model=model, max_tokens=max_tokens)
     return subTopicSent
 
@@ -172,17 +172,17 @@ def initializeSession():
         st.session_state.subTopics = []
     if 'chosenSubTopics' not in st.session_state:
         st.session_state.chosenSubTopics = {}
-    if 'numCategories' not in st.session_state:
-        st.session_state.numCategories = 10
-    if 'numArticles' not in st.session_state:
-        st.session_state.numArticles = 10
+    #if 'numCategories' not in st.session_state:
+        #st.session_state.numCategories = 10
+    #if 'numArticles' not in st.session_state:
+        #st.session_state.numArticles = 10
 def resetSession():
     st.session_state.categories = []
     st.session_state.chosenCategories = []
     st.session_state.subTopics = []
     st.session_state.chosenSubTopics = {}
-    st.session_state.numCategories = 10
-    st.session_state.numArticles = 10
+    #st.session_state.numCategories = 10
+    #st.session_state.numArticles = 10
 
 def main():
     qry = st.text_input(
@@ -190,7 +190,7 @@ def main():
         key="query",
     )
     resetData = st.button("Reset Session Data", on_click=resetSession)
-    with st.form("Created Page Settings"):
+    '''with st.form("Created Page Settings"):
         st.write("Settings for the new Articles")
         cats = st.slider("Number of Categories to generate (from 0-10)", 0, 10)
         arts = st.slider("Number of Articles to generate for each category (from 0-10)", 0, 10)
@@ -198,7 +198,7 @@ def main():
         submitted = st.form_submit_button("Submit")
         if submitted:
             st.session_state.numCategories = cats
-            st.session_state.numArticles = arts
+            st.session_state.numArticles = arts'''
 
 
     if qry:
