@@ -163,6 +163,9 @@ def generateSubTopics(qry, numArticles, model="gpt-3.5-turbo-16k", max_tokens=50
     subTopicSent = generate_content(prompt, model=model, max_tokens=max_tokens)
     return subTopicSent
 
+def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
+    return
+
 def initializeSession():
     if 'categories' not in st.session_state:
         st.session_state.categories = []
@@ -185,6 +188,13 @@ def resetSession():
     #st.session_state.numArticles = 10
 
 def main():
+    st.set_page_config(
+        page_icon="✍️",
+        page_title="Generate Fully Furnished Wordpress Webpage with Categories and Articles"
+    )
+
+    st.sidebar.success("Select a page above")
+
     qry = st.text_input(
         "What do you want the main topic of the articles to be? v73\n",
         key="query",
