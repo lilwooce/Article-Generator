@@ -9,7 +9,7 @@ from main import *
 from ast import literal_eval
 
 client = OpenAI(
-    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+    api_key = st.secrets["OPENAI_API_KEY"]
 )
 
 def save_to_file(filename, content):
