@@ -8,13 +8,6 @@ import streamlit as st
 
 username = "protheus99@gmail.com"
 password = "mymf dsA0 V8o2 c4BQ SIan pywi"
-#mBjE xlA6 fBsv SZ8k MgqT Udql
-#ycUa Ym1N Nya6 C6DJ cISU PyQ1
-#Mroq tBu0 kLOW z0d8 oP4p 3LfA
-#bPUx nRux bJXP k3SS xKCQ Zdy0
-#RMP3 cfy0 luKu lNWU tQdp D7dS
-#mymf dsA0 V8o2 c4BQ SIan pywi
-
 wordpress_credentials = username + ":" + password
 wordpress_token = base64.b64encode(wordpress_credentials.encode())
 wordpress_header = {'Authorization': 'Basic ' + wordpress_token.decode('utf-8'), 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36'}

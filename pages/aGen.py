@@ -17,7 +17,7 @@ def save_to_file(filename, content):
         f.write("\n".join(content))
 
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=500, temperature=0.4):
-    gpt_response = client.completions.create(
+    gpt_response = client.chat.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
