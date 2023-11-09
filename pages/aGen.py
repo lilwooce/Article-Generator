@@ -27,7 +27,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=500, temperature=
         stop=None,
         temperature=temperature,
     )
-    response = gpt_response.choices[0].text
+    response = gpt_response.choices[0].message.content
     print(response)
     print(response.model_dump_json(indent=2))
     return response.strip().split('\n')

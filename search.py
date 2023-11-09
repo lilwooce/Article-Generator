@@ -19,7 +19,7 @@ def save_to_file(filename, content):
     with open(filename, 'w') as f:
         f.write("\n".join(content))
 
-def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=500, temperature=0.4):
+def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=2000, temperature=0.4):
     gpt_response = client.chat.completions.create(
         model=model,
         messages=[
@@ -30,7 +30,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=500, temperature=
         stop=None,
         temperature=temperature,
     )
-    response = gpt_response.choices[0].text
+    response = gpt_response.choices[0].message.content
     print(response)
     print(response.model_dump_json(indent=2))
     return response.strip().split('\n')
@@ -47,7 +47,7 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
         stop=None,
         temperature=temperature,
     )
-    response = gpt_response.choices[0].text
+    response = gpt_response.choices[0].message.content
     print(response)
     print(response.model_dump_json(indent=2))
     formatted_response = response.strip().split('\n')
