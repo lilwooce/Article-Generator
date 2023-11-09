@@ -32,7 +32,6 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=2000, temperature
     )
     response = gpt_response.choices[0].message.content
     print(response)
-    print(response.model_dump_json(indent=2))
     return response.strip().split('\n')
 
 def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
@@ -49,7 +48,6 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
     )
     response = gpt_response.choices[0].message.content
     print(response)
-    print(response.model_dump_json(indent=2))
     formatted_response = response.strip().split('\n')
     save_to_file("Semantic_SEO_Readout.txt", formatted_response)
     return response   
