@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import pandas as pd
 import re
 import time
@@ -7,14 +7,17 @@ import streamlit as st
 from IPython.display import display, Markdown
 from main import *
 from ast import literal_eval
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+
+client = OpenAI(
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+)
 
 def save_to_file(filename, content):
     with open(filename, 'w') as f:
         f.write("\n".join(content))
 
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=500, temperature=0.4):
-    gpt_response = openai.ChatCompletion.create(
+    gpt_response = client.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
@@ -24,8 +27,9 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=500, temperature=
         stop=None,
         temperature=temperature,
     )
-    response = gpt_response['choices'][0]['message']['content'].strip()
-    #print(response)
+    response = gpt_response.choices[0].text
+    print(response)
+    print(response.model_dump_json(indent=2))
     return response.strip().split('\n')
 
 def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
@@ -38,8 +42,8 @@ def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
 
 def main():
     st.set_page_config(
-        page_icon="📝",
-        page_title="Create a single downloadble article"
+        page_icon="📝", 
+        page_title="Create a single downloadable article"
     )
 
     qry = st.text_input(

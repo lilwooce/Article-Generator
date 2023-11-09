@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import pandas as pd
 import re
 import time
@@ -7,8 +7,12 @@ import streamlit as st
 from IPython.display import display, Markdown
 from main import *
 from ast import literal_eval
+import json
 import WPUploader
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+
+client = OpenAI(
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+)
 
 
 def save_to_file(filename, content):
@@ -16,7 +20,7 @@ def save_to_file(filename, content):
         f.write("\n".join(content))
 
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=500, temperature=0.4):
-    gpt_response = openai.ChatCompletion.create(
+    gpt_response = client.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
@@ -26,12 +30,13 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=500, temperature=
         stop=None,
         temperature=temperature,
     )
-    response = gpt_response['choices'][0]['message']['content'].strip()
-    #print(response)
+    response = gpt_response.choices[0].text
+    print(response)
+    print(response.model_dump_json(indent=2))
     return response.strip().split('\n')
 
 def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
-    gpt_response = openai.ChatCompletion.create(
+    gpt_response = client.completions.create(
         model=model,
         messages=[
             #this is the improvement prompt
@@ -42,8 +47,9 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
         stop=None,
         temperature=temperature,
     )
-    response = gpt_response['choices'][0]['message']['content'].strip()
-    #print(response)
+    response = gpt_response.choices[0].text
+    print(response)
+    print(response.model_dump_json(indent=2))
     formatted_response = response.strip().split('\n')
     save_to_file("Semantic_SEO_Readout.txt", formatted_response)
     return response   
