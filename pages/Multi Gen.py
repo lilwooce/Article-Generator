@@ -71,4 +71,4 @@ async def main():
         with open("GeneratedArticles.zip", "rb") as file:
             btn = st.download_button(label="Download File", data=file, file_name="final_data.zip")
     
-main()
+await main()
