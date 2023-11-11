@@ -29,7 +29,6 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=2000, temperature
         temperature=temperature,
     )
     response = gpt_response.choices[0].message.content
-    print(response)
     return response.strip().split('\n')
 
 def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
@@ -38,13 +37,12 @@ def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
     save_to_file(f"{qry[0:50]}.txt", article)
     return(f"{qry[0:50]}.txt")
 
-#def zipFiles():
+def zipFiles():
     fileList = []
 
     for t in st.session_state.multiGenTopics:
         article = quickArticleCreate(t)
         fileList.append(article)
-        time.sleep(120)
 
     with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
             for fil in fileList:
@@ -52,11 +50,6 @@ def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
     
     with open("GeneratedArticles.zip", "rb") as file:
             btn = st.download_button(label="Download File", data=file, file_name="final_data.zip")
-
-def zipFiles():
-     st.write("Hello")
-     time.sleep(10)
-     st.write("goodbye")
 
 def main():
     st.set_page_config(
