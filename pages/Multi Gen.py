@@ -58,7 +58,7 @@ def main():
         for t in st.session_state.multiGenTopics:
             article = quickArticleCreate(t)
             fileList.append(article)
-            asyncio.sleep(120)
+            time.sleep(120)
 
         with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
             for fil in fileList:
