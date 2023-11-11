@@ -64,6 +64,7 @@ def main():
     editedDF = st.data_editor(df, num_rows="dynamic")
     if data is not None:
         editedDF = pd.read_csv(data)
+        st.write(editedDF)
     
     submitted = st.button("Submit")
     if submitted:
