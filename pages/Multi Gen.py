@@ -38,7 +38,27 @@ def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
     save_to_file(f"{qry[0:50]}.txt", article)
     return(f"{qry[0:50]}.txt")
 
-async def main():
+#def zipFiles():
+    fileList = []
+
+    for t in st.session_state.multiGenTopics:
+        article = quickArticleCreate(t)
+        fileList.append(article)
+        time.sleep(120)
+
+    with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
+            for fil in fileList:
+                myzip.write(fil)
+    
+    with open("GeneratedArticles.zip", "rb") as file:
+            btn = st.download_button(label="Download File", data=file, file_name="final_data.zip")
+
+def zipFiles():
+     st.write("Hello")
+     time.sleep(10)
+     st.write("goodbye")
+
+def main():
     st.set_page_config(
         page_icon="📝", 
         page_title="Create a multiple downloadable articles zipped into a single file"
@@ -55,20 +75,12 @@ async def main():
     submitted = st.button("Submit")
     if submitted:
         st.session_state.multiGenTopics = editedDF["Topic"].tolist()
-        st.write(st.session_state.multiGenTopics)
-        fileList = []
+        zipFiles()
+        
 
-        for t in st.session_state.multiGenTopics:
-            article = quickArticleCreate(t)
-            fileList.append(article)
-            asyncio.sleep(120)
-
-        with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
-            for fil in fileList:
-                myzip.write(fil)
+        
                 
 
-        with open("GeneratedArticles.zip", "rb") as file:
-            btn = st.download_button(label="Download File", data=file, file_name="final_data.zip")
+        
     
-await main()
+main()
