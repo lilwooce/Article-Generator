@@ -4,6 +4,7 @@ import re
 import time
 import asyncio
 import streamlit as st
+import io
 from IPython.display import display, Markdown
 from main import *
 from ast import literal_eval
@@ -44,6 +45,9 @@ def quickArticleCreate(qry, model=1, maxtokens=50):
     save_to_file(f"{qry}.txt", qry)
     return(f"{qry}.txt")
 
+
+zip_buffer = io.BytesIO()
+
 def main():
     st.set_page_config(
         page_icon="📝", 
@@ -65,9 +69,10 @@ def main():
             article = quickArticleCreate(t)
             fileList.append(article)
 
-        with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
+        with zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False) as myzip:
             for fil in fileList:
                 myzip.write(fil)
-                st.download_button(label="Download File", data=myzip, mime="application/zip")
+        
+        st.download_button(label="Download File", data=myzip, file_name="data.zip", mime="application/zip")
     
 main()
