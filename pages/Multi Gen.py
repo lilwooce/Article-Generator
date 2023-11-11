@@ -57,7 +57,7 @@ def main():
     
     submitted = st.button("Submit")
     if submitted:
-        st.session_state.multiGenTopics = editedDF["Topics"].tolist()
+        st.session_state.multiGenTopics = editedDF["Topic"].tolist()
         st.write(st.session_state.multiGenTopics)
         fileList = []
 
