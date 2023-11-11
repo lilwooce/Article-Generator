@@ -45,6 +45,7 @@ def zipFiles():
     fileList = []
 
     for t in st.session_state.multiGenTopics:
+        st.write(f"generating article {t}")
         article = quickArticleCreate(t)
         fileList.append(article)
 
