@@ -67,7 +67,7 @@ def main():
 
         with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
             for fil in fileList:
-                myzip.write(f"{fil}.txt")
+                myzip.write(fil)
                 st.download_button(label="Download File", data=myzip)
     
 main()
