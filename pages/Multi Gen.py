@@ -70,7 +70,7 @@ def main():
                 myzip.write(fil)
                 
 
-        with open("data.zip", "rb") as file:
-            btn = st.download_button(label="Download File", data=myzip, file_name="final_data.zip")
+        with open("GeneratedArticles.zip", "rb") as file:
+            btn = st.download_button(label="Download File", data=file, file_name="final_data.zip")
     
 main()
