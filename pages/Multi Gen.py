@@ -33,29 +33,41 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=2000, temperature
     return response.strip().split('\n')
 
 def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
-    filename = f"{qry[0:70]}{random.randint(1,100000000)}.txt"
+    filename = f"{qry[0:75]}{random.randint(1,100000000)}.txt"
     prompt = f"Act as a skilled content writer who is proficient in SEO writing and has excellent English language skills. To get started, please create two tables. The first table should contain an outline of the article, and the second table should contain the article itself. Please use Markdown language to bold the heading of the second table. The article should be 4,000 words long, unique, SEO-optimized, and human-written in English. It should cover the given topic and include at least 15 headings and subheadings (including H1, H2, H3, and H4 headings). Please compose the article in your own words, avoiding copying and pasting from other sources. When producing content, each paragraph should be at least 250 words long, please consider complexity and burstiness, striving to achieve high levels of both without sacrificing specificity or context. Use paragraphs that fully engage the reader, and write in a conversational style that is human-like. This means employing an informal tone, utilizing personal pronouns, keeping it simple, engaging the reader, utilizing the active voice, keeping it brief, asking rhetorical questions, and incorporating analogies and metaphors. Please end the article with a conclusion paragraph and 5 unique FAQs after the conclusion. Additionally, remember to bold the title and all headings of the article and use appropriate headings for H tags. Now, please write an article on the given topic: {qry}"
     article = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file(filename, article)
     st.write(f"{filename}has been created")
     return(filename)
 
-def zipFiles():
-    st.write("zipping files")
+def genFiles():
+    st.write("generating files")
     fileList = []
 
     for t in st.session_state.multiGenTopics:
         st.write(f"generating article {t}")
         article = quickArticleCreate(t)
         fileList.append(article)
+    
+    for f in st.session_state.multiGenTopics:
+        if f not in fileList:
+            st.write(f"not initially created, regenerating {t}")
+            article = quickArticleCreate(t)
+            fileList.append(article)
 
+    st.session_state.filelist = fileList
+    zipFiles()
+
+def zipFiles():
     with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
-            for fil in fileList:
-                myzip.write(fil)
-                st.write(f"{fil} has been zipped")
+        print("starting the zip")
+        
+        for fil in st.session_state.filelist:
+            myzip.write(fil)
+            st.write(f"{fil} has been zipped")
     
     with open("GeneratedArticles.zip", "rb") as file:
-            btn = st.download_button(label="Download File", data=file, file_name="final_data.zip")
+        btn = st.download_button(label="Download File", data=file, file_name="final_data.zip")
 
 def main():
     st.set_page_config(
@@ -76,7 +88,7 @@ def main():
     if submitted:
         st.session_state.multiGenTopics = editedDF["Topic"].tolist()
         st.write(st.session_state.multiGenTopics)
-        zipFiles()
+        genFiles()
         
 
         
