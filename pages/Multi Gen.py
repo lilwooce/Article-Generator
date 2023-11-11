@@ -38,7 +38,7 @@ def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
     save_to_file(f"{qry[0:50]}.txt", article)
     return(f"{qry[0:50]}.txt")
 
-def main():
+async def main():
     st.set_page_config(
         page_icon="📝", 
         page_title="Create a multiple downloadable articles zipped into a single file"
@@ -61,7 +61,7 @@ def main():
         for t in st.session_state.multiGenTopics:
             article = quickArticleCreate(t)
             fileList.append(article)
-            time.sleep(120)
+            asyncio.sleep(120)
 
         with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
             for fil in fileList:
