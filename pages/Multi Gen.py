@@ -46,24 +46,28 @@ def genFiles():
 
     for t in st.session_state.multiGenTopics:
         st.write(f"generating article {t}")
-        #article = quickArticleCreate(t)
-        #fileList.append(article)
-        st.write(t)
+        article = quickArticleCreate(t)
+        fileList.append(article)
+    
+    for f in st.session_state.multiGenTopics:
+        if f not in fileList:
+            st.write(f"not initially created, regenerating {t}")
+            article = quickArticleCreate(t)
+            fileList.append(article)
 
-    #st.session_state.filelist = fileList
+    st.session_state.filelist = fileList
     zipFiles()
 
 def zipFiles():
-    st.write("starting the zip")
-    #with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
-        #print("starting the zip")
+    with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
+        print("starting the zip")
         
-        #for fil in st.session_state.filelist:
-            #myzip.write(fil)
-            #st.write(f"{fil} has been zipped")
+        for fil in st.session_state.filelist:
+            myzip.write(fil)
+            st.write(f"{fil} has been zipped")
     
-    #with open("GeneratedArticles.zip", "rb") as file:
-        #btn = st.download_button(label="Download File", data=file, file_name="final_data.zip")
+    with open("GeneratedArticles.zip", "rb") as file:
+        btn = st.download_button(label="Download File", data=file, file_name="final_data.zip")
 
 def main():
     st.set_page_config(
