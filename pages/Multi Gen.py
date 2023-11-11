@@ -44,10 +44,13 @@ def main():
         page_title="Create a multiple downloadable articles zipped into a single file"
     )
 
-    st.text("Add the topics of the articles you want to generate below")
+    st.text("Add or upload the topics of the articles you want to generate below")
 
+    data = st.file_uploader("uplaod file", type={"csv", "txt"})
     df = pd.DataFrame(columns=["Topic"])
     editedDF = st.data_editor(df, num_rows="dynamic")
+    if data is not None:
+        editedDF = pd.read_csv(data)
     
     submitted = st.button("Submit")
     if submitted:
