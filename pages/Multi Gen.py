@@ -55,7 +55,7 @@ def main():
     df = pd.DataFrame(columns=["Topic"])
     editedDF = st.data_editor(df, num_rows="dynamic")
     
-    submitted = st.form_submit_button("Submit")
+    submitted = st.button("Submit")
     if submitted:
         st.session_state.multiGenTopics = editedDF["Topics"].tolist()
         st.write(st.session_state.multiGenTopics)
@@ -68,5 +68,6 @@ def main():
         with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
             for f in fileList:
                 myzip.write(f)
+                st.download_button(label="Download File", data=myzip)
     
 main()
