@@ -40,7 +40,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=2000, temperature
         #st.download_button(label=f"Download Final Draft ({qry})", data=file, key=qry)
     #return article
 
-def quickArticleCreate(qry, model, maxtokens):
+def quickArticleCreate(qry, model=1, maxtokens=50):
     save_to_file(f"{qry.txt}", qry)
     return(f"{qry.txt}")
 
