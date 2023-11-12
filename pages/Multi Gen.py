@@ -42,13 +42,26 @@ def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
 
 def genFiles():
     st.write("generating files")
+    fileList = []
 
     for t in st.session_state.multiGenTopics:
         st.write(f"generating article {t}")
         article = quickArticleCreate(t)
-        with open(article, "rb") as file:
-            st.download_button(label=f"Download {t}", data=file, file_name="final_data.zip", key=f"{t}")
-        file.close()
+        fileList.append(article)
+
+    st.session_state.filelist = fileList
+    zipFiles()
+
+def zipFiles():
+    with zipfile.ZipFile("GeneratedArticles.zip", 'w') as myzip:
+        print("starting the zip")
+        
+        for fil in st.session_state.filelist:
+            myzip.write(fil)
+            st.write(f"{fil} has been zipped")
+    
+    with open("GeneratedArticles.zip", "rb") as file:
+        btn = st.download_button(label="Download File", data=file, file_name="final_data.zip")
 
 def main():
     st.set_page_config(
