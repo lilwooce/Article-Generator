@@ -173,7 +173,7 @@ def main():
     )
 
     qry = st.text_input(
-        "What do you want the main topic of the article to be? v01\n",
+        "What do you want the main topic of the article to be? v02\n",
         key="query",
     )
 
