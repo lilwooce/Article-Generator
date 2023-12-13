@@ -115,6 +115,9 @@ def concatenate_files(file_names, output_file_name):
         output_file.write(final_draft)
     return final_draft
 
+def quickArticle(qry, model="gpt-3.5-turbo-16k"):
+    generate_content(qry)
+
 def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_tokens_section=500, max_tokens_improve_section=500):
     query = qry
     results = analyze_serps(query)
@@ -176,7 +179,7 @@ def main():
 
 
     if qry:
-        article = createArticle(qry)
+        article = quickArticle(qry)
 
         st.write(article)
     
