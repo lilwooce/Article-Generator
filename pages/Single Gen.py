@@ -19,7 +19,7 @@ def save_to_file(filename, content):
     with open(filename, 'w') as f:
         f.write("\n".join(content))
 
-def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=4000, temperature=0.4):
+def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=3200, temperature=0.4):
     gpt_response = client.chat.completions.create(
         model=model,
         messages=[
