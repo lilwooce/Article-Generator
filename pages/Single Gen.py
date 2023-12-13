@@ -122,7 +122,7 @@ def quickArticle(qry, model="gpt-3.5-turbo-16k"):
         st.download_button(label=f"Download Final Draft ({qry})", data=file, key=qry)
     return a
 
-def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_tokens_section=500, max_tokens_improve_section=500):
+def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=1000, max_tokens_section=2000, max_tokens_improve_section=2000):
     query = qry
     results = analyze_serps(query)
     summary = summarize_nlp(results)
@@ -177,13 +177,13 @@ def main():
     )
 
     qry = st.text_input(
-        "What do you want the main topic of the article to be? v02\n",
+        "What do you want the main topic of the article to be? v03\n",
         key="query",
     )
 
 
     if qry:
-        article = quickArticle(qry)
+        article = createArticle(qry)
 
         st.write(article)
     
