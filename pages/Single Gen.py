@@ -116,7 +116,11 @@ def concatenate_files(file_names, output_file_name):
     return final_draft
 
 def quickArticle(qry, model="gpt-3.5-turbo-16k"):
-    generate_content(qry)
+    a = generate_content(qry)
+    save_to_file("article.txt", a)
+    with open("article.txt") as file:
+        st.download_button(label=f"Download Final Draft ({qry})", data=file, key=qry)
+    return a
 
 def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=250, max_tokens_section=500, max_tokens_improve_section=500):
     query = qry
