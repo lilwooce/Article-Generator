@@ -23,7 +23,7 @@ def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=3200, temperature
     gpt_response = client.chat.completions.create(
         model=model,
         messages=[
-            {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
+            {"role": "system", "content": "Acting as a website copywriter with over 25 years of experience, create content for the following topic {prompt}. For the topic create a Meta title that follows the rules described. Use the following rules when creating a meta title: Title length should be between 50 to 60. To target unique user searches, use keyword phrases instead of keywords. A specialist toy company might include the keyword phrase 'Japanese Anime Toys' instead of the generic keyword 'Toys'. The page title should convey the essence of the page and be readable. Do not overfill the title with keywords; just one or two phrases in the visible part will be enough. As much as possible do not use stop words in titles. Meta description. Use the following rules when creating a meta description: Use approximately 25 - 30 words, 105 to 150 Characters in Length. Include important keywords used on the page within the Description. If the page content focuses on 2 core keyword phrases, write one sentence for each keyword phrase. focus the description based on the search intent of the customer. Search intents are: Navigational, Informational, Commercial, and Transactional Page header. Use the following rules when creating the header: The header should be between 40-50 characters. The words in the header should reinforce the topic. Page sub header. Sub header will reinforce the header and actions. Use the following rules for sub headers: Grab Attention With Descriptive Subheadings, Use Keywords To Help With SEO Performance. Use Parallel Structure in Your Subheadings. 300 words of page content using the AIDA Attention Interest Desire Action framework. One paragraph each for Attention, Interest, Desire, Action. 50 word summary of the content and call to action."},
             {"role": "user", "content": prompt}],
         max_tokens=max_tokens,
         n=1,
@@ -191,7 +191,7 @@ def main():
     )
 
     qry = st.text_input(
-        "What do you want the main topic of the article to be? v03\n",
+        "What do you want the main topic of the article to be? v04\n",
         key="query",
     )
 
