@@ -9,46 +9,41 @@ from main import *
 from ast import literal_eval
 import json
 import WPUploader
+import anthropic
 
-client = OpenAI(
-    api_key = st.secrets["OPENAI_API_KEY"]
+client = anthropic.Anthropic(
+    api_key=st.secrets["CLAUDE_API_KEY"],
 )
-
 
 def save_to_file(filename, content):
     with open(filename, 'w') as f:
         f.write("\n".join(content))
 
-def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=3200, temperature=0.4):
-    gpt_response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": "Acting as a website copywriter with over 25 years of experience, create content for the following topic {prompt}. For the topic create a Meta title that follows the rules described. Use the following rules when creating a meta title: Title length should be between 50 to 60. To target unique user searches, use keyword phrases instead of keywords. A specialist toy company might include the keyword phrase 'Japanese Anime Toys' instead of the generic keyword 'Toys'. The page title should convey the essence of the page and be readable. Do not overfill the title with keywords; just one or two phrases in the visible part will be enough. As much as possible do not use stop words in titles. Meta description. Use the following rules when creating a meta description: Use approximately 25 - 30 words, 105 to 150 Characters in Length. Include important keywords used on the page within the Description. If the page content focuses on 2 core keyword phrases, write one sentence for each keyword phrase. focus the description based on the search intent of the customer. Search intents are: Navigational, Informational, Commercial, and Transactional Page header. Use the following rules when creating the header: The header should be between 40-50 characters. The words in the header should reinforce the topic. Page sub header. Sub header will reinforce the header and actions. Use the following rules for sub headers: Grab Attention With Descriptive Subheadings, Use Keywords To Help With SEO Performance. Use Parallel Structure in Your Subheadings. 300 words of page content using the AIDA Attention Interest Desire Action framework. One paragraph each for Attention, Interest, Desire, Action. 50 word summary of the content and call to action."},
-            {"role": "user", "content": prompt}],
+def generate_content(prompt, model="claude-3-opus-20240229", max_tokens=1000, temperature=0.4):
+    message = client.messages.create(
+        model="model",
         max_tokens=max_tokens,
-        n=1,
-        stop=None,
         temperature=temperature,
+        system=f"Acting as a website copywriter with over 25 years of experience, create content for the following topic {prompt}. For the topic create a Meta title that follows the rules described. Use the following rules when creating a meta title: Title length should be between 50 to 60. To target unique user searches, use keyword phrases instead of keywords. A specialist toy company might include the keyword phrase 'Japanese Anime Toys' instead of the generic keyword 'Toys'. The page title should convey the essence of the page and be readable. Do not overfill the title with keywords; just one or two phrases in the visible part will be enough. As much as possible do not use stop words in titles. Meta description. Use the following rules when creating a meta description: Use approximately 25 - 30 words, 105 to 150 Characters in Length. Include important keywords used on the page within the Description. If the page content focuses on 2 core keyword phrases, write one sentence for each keyword phrase. focus the description based on the search intent of the customer. Search intents are: Navigational, Informational, Commercial, and Transactional Page header. Use the following rules when creating the header: The header should be between 40-50 characters. The words in the header should reinforce the topic. Page sub header. Sub header will reinforce the header and actions. Use the following rules for sub headers: Grab Attention With Descriptive Subheadings, Use Keywords To Help With SEO Performance. Use Parallel Structure in Your Subheadings. 300 words of page content using the AIDA Attention Interest Desire Action framework. One paragraph each for Attention, Interest, Desire, Action. 50 word summary of the content and call to action.",
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
     )
-    response = gpt_response.choices[0].message.content
-    return response.strip().split('\n')
+
+    return message.content
 
 def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
-    gpt_response = client.chat.completions.create(
-        model=model,
-        messages=[
-            #this is the improvement prompt
-            {"role": "system", "content": "You are an expert at Semantic SEO. In particular, you are superhuman at taking the result of an NLP keyword analysis of a search engine results page for a given keyword, and using it to build a readout/guide that can be used to inform someone writing a long-form article about a given topic so that they can best fully cover the semantic SEO as shown in the SERP. The goal of this guide is to help the writer make sure that the content they are creating is as comprehensive to the semantic SEO expressed in the content that ranks on the first page of Google for the given query. With the following semantic data, please provide this readout/guide. This readout/guide should be useful to someone writing about the topic, and should not include instructions to add info to the article about the SERP itself. The SERP semantic SEO data is just to be used to help inform the guide/readout. Please provide the readout/guide in well organized and hierarchical markdown."},
-            {"role": "user", "content": f"Semantic SEO data for the keyword based on the content that ranks on the first page of google for the given keyword query of: {query} and it's related semantic data:  {prompt}"}],
+    message = client.messages.create(
+        model="model",
         max_tokens=max_tokens,
-        n=1,
-        stop=None,
         temperature=temperature,
+        system=f"You are an expert at Semantic SEO. In particular, you are superhuman at taking the result of an NLP keyword analysis of a search engine results page for a given keyword, and using it to build a readout/guide that can be used to inform someone writing a long-form article about a given topic so that they can best fully cover the semantic SEO as shown in the SERP. The goal of this guide is to help the writer make sure that the content they are creating is as comprehensive to the semantic SEO expressed in the content that ranks on the first page of Google for the given query. With the following semantic data, please provide this readout/guide. This readout/guide should be useful to someone writing about the topic, and should not include instructions to add info to the article about the SERP itself. The SERP semantic SEO data is just to be used to help inform the guide/readout. Please provide the readout/guide in well organized and hierarchical markdown.",
+        messages=[
+            {"role": "user", "content": "Semantic SEO data for the keyword based on the content that ranks on the first page of google for the given keyword query of: {query} and it's related semantic data:  {prompt}"}
+        ]
     )
-    response = gpt_response.choices[0].message.content
-    formatted_response = response.strip().split('\n')
-    save_to_file("Semantic_SEO_Readout.txt", formatted_response)
-    return response   
+    save_to_file("Semantic_SEO_Readout.txt", message.content)
+    return message.content   
 
 def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=500):
     prompt = f"Generate an incredibly thorough article outline for the topic: {topic}. Consider all possible angles and be as thorough as possible. Please use Roman Numerals for each section."
@@ -116,18 +111,17 @@ def concatenate_files(file_names, output_file_name):
     return final_draft
 
 def generate_custom_content(prompt, model="gpt-3.5-turbo", max_tokens=3200, temperature=0.4):
-    gpt_response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": "Acting as a website copywriter with over 25 years of experience, create content for the following topic {prompt}. For the topic create a Meta title that follows the rules described. Use the following rules when creating a meta title: Title length should be between 50 to 60. To target unique user searches, use keyword phrases instead of keywords. A specialist toy company might include the keyword phrase 'Japanese Anime Toys' instead of the generic keyword 'Toys'. The page title should convey the essence of the page and be readable. Do not overfill the title with keywords; just one or two phrases in the visible part will be enough. As much as possible do not use stop words in titles. Meta description. Use the following rules when creating a meta description: Use approximately 25 - 30 words, 105 to 150 Characters in Length. Include important keywords used on the page within the Description. If the page content focuses on 2 core keyword phrases, write one sentence for each keyword phrase. focus the description based on the search intent of the customer. Search intents are: Navigational, Informational, Commercial, and Transactional Page header. Use the following rules when creating the header: The header should be between 40-50 characters. The words in the header should reinforce the topic. Page sub header. Sub header will reinforce the header and actions. Use the following rules for sub headers: Grab Attention With Descriptive Subheadings, Use Keywords To Help With SEO Performance. Use Parallel Structure in Your Subheadings. 300 words of page content using the AIDA Attention Interest Desire Action framework. One paragraph each for Attention, Interest, Desire, Action. 50 word summary of the content and call to action."},
-            {"role": "user", "content": prompt}],
+    message = client.messages.create(
+        model="model",
         max_tokens=max_tokens,
-        n=1,
-        stop=None,
         temperature=temperature,
+        system=f"Acting as a website copywriter with over 25 years of experience, create content for the following topic {prompt}. For the topic create a Meta title that follows the rules described. Use the following rules when creating a meta title: Title length should be between 50 to 60. To target unique user searches, use keyword phrases instead of keywords. A specialist toy company might include the keyword phrase 'Japanese Anime Toys' instead of the generic keyword 'Toys'. The page title should convey the essence of the page and be readable. Do not overfill the title with keywords; just one or two phrases in the visible part will be enough. As much as possible do not use stop words in titles. Meta description. Use the following rules when creating a meta description: Use approximately 25 - 30 words, 105 to 150 Characters in Length. Include important keywords used on the page within the Description. If the page content focuses on 2 core keyword phrases, write one sentence for each keyword phrase. focus the description based on the search intent of the customer. Search intents are: Navigational, Informational, Commercial, and Transactional Page header. Use the following rules when creating the header: The header should be between 40-50 characters. The words in the header should reinforce the topic. Page sub header. Sub header will reinforce the header and actions. Use the following rules for sub headers: Grab Attention With Descriptive Subheadings, Use Keywords To Help With SEO Performance. Use Parallel Structure in Your Subheadings. 300 words of page content using the AIDA Attention Interest Desire Action framework. One paragraph each for Attention, Interest, Desire, Action. 50 word summary of the content and call to action.",
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
     )
-    response = gpt_response.choices[0].message.content
-    return response.strip().split('\n')
+
+    return message.content
 
 def quickArticle(qry, model="gpt-3.5-turbo-16k"):
     a = generate_custom_content(qry)

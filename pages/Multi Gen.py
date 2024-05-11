@@ -9,6 +9,7 @@ from IPython.display import display, Markdown
 from main import *
 from ast import literal_eval
 import zipfile
+import anthropic
 
 client = OpenAI(
     api_key = st.secrets["OPENAI_API_KEY"]
@@ -19,18 +20,17 @@ def save_to_file(filename, content):
         f.write("\n".join(content))
 
 def generate_content(prompt, model="gpt-3.5-turbo", max_tokens=2000, temperature=0.4):
-    gpt_response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": "Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can."},
-            {"role": "user", "content": prompt}],
+    message = client.messages.create(
+        model="model",
         max_tokens=max_tokens,
-        n=1,
-        stop=None,
         temperature=temperature,
+        system=f"Simulate an exceptionally talented journalist and editor. Given the following instructions, think step by step and produce the best possible output you can.",
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
     )
-    response = gpt_response.choices[0].message.content
-    return response.strip().split('\n')
+
+    return message.content
 
 def quickArticleCreate(qry, model="gpt-3.5-turbo-16k", max_tokens=3000):
     filename = f"{qry[0:75]}{random.randint(1,10000)}.txt"
