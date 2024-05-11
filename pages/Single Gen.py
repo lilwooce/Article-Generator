@@ -32,7 +32,7 @@ def generate_content(prompt, model="claude-3-opus-20240229", max_tokens=1000, te
 
     return message.content
 
-def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", max_tokens=1000, temperature=0.4):
+def generate_semantic_improvements_guide(prompt,query, model="claude-3-opus-20240229", max_tokens=1000, temperature=0.4):
     message = client.messages.create(
         model="model",
         max_tokens=max_tokens,
@@ -45,13 +45,13 @@ def generate_semantic_improvements_guide(prompt,query, model="gpt-3.5-turbo", ma
     save_to_file("Semantic_SEO_Readout.txt", message.content)
     return message.content   
 
-def generate_outline(topic, model="gpt-3.5-turbo", max_tokens=500):
+def generate_outline(topic, model="claude-3-opus-20240229", max_tokens=500):
     prompt = f"Generate an incredibly thorough article outline for the topic: {topic}. Consider all possible angles and be as thorough as possible. Please use Roman Numerals for each section."
     outline = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file("outline.txt", outline)
     return outline
 
-def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens=1000):
+def improve_outline(outline, semantic_readout, model="claude-3-opus-20240229", max_tokens=1000):
     prompt = f"Given the following article outline, please improve and extend this outline significantly. Please use Roman Numerals for each section. The goal is as thorough, clear, and useful out line as possible exploring the topic in as much depth as possible. Think step by step before answering. Please take into consideration the semantic seo readout provided here: {semantic_readout} which should help inform some of the improvements you can make, though please also consider additional improvements not included in this semantic seo readout.  Outline to improve: {outline}."
     improved_outline = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file("improved_outline.txt", improved_outline)
@@ -59,7 +59,7 @@ def improve_outline(outline, semantic_readout, model="gpt-3.5-turbo", max_tokens
 
 
 
-def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=250):
+def generate_sections(improved_outline, model="claude-3-opus-20240229", max_tokens=250):
     sections = []
 
     # Parse the outline to identify the major sections
@@ -88,7 +88,7 @@ def generate_sections(improved_outline, model="gpt-3.5-turbo", max_tokens=250):
 
 
 
-def improve_section(section, i, model="gpt-3.5-turbo-16k", max_tokens=500):
+def improve_section(section, i, model="claude-3-opus-20240229-16k", max_tokens=500):
     prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Only provide the updated section, not the text of your recommendation, just make the changes. Provide the updated section in Markdown please. Updated Section with improvements:"
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file(f"improved_section_{i+1}.txt", improved_section)
@@ -110,7 +110,7 @@ def concatenate_files(file_names, output_file_name):
         output_file.write(final_draft)
     return final_draft
 
-def generate_custom_content(prompt, model="gpt-3.5-turbo", max_tokens=3200, temperature=0.4):
+def generate_custom_content(prompt, model="claude-3-opus-20240229", max_tokens=3200, temperature=0.4):
     message = client.messages.create(
         model="model",
         max_tokens=max_tokens,
@@ -123,14 +123,14 @@ def generate_custom_content(prompt, model="gpt-3.5-turbo", max_tokens=3200, temp
 
     return message.content
 
-def quickArticle(qry, model="gpt-3.5-turbo-16k"):
+def quickArticle(qry, model="claude-3-opus-20240229-16k"):
     a = generate_custom_content(qry)
     save_to_file("article.txt", a)
     with open("article.txt") as file:
         st.download_button(label=f"Download Final Draft ({qry})", data=file, key=qry)
     return a
 
-def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=1000, max_tokens_section=2000, max_tokens_improve_section=2000):
+def createArticle(qry, model="claude-3-opus-20240229-16k", max_tokens_outline=1000, max_tokens_section=2000, max_tokens_improve_section=2000):
     query = qry
     results = analyze_serps(query)
     summary = summarize_nlp(results)
@@ -149,7 +149,7 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=1000, max_t
     print("Initial outline created.\n")
 
     print("Improving the initial outline...")
-    improved_outline = improve_outline(initial_outline, semantic_readout, model='gpt-3.5-turbo', max_tokens=500)
+    improved_outline = improve_outline(initial_outline, semantic_readout, model='claude-3-opus-20240229', max_tokens=500)
     print("Improved outline created.\n")
 
     print("Generating sections based on the improved outline...")
@@ -159,7 +159,7 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=1000, max_t
     print("Improving sections...")
     file_names = [f"improved_section_{i+1}.txt" for i in range(len(sections))]
     for i, section in enumerate(sections):
-        improve_section(section, i, model='gpt-3.5-turbo', max_tokens=1000)
+        improve_section(section, i, model='claude-3-opus-20240229', max_tokens=1000)
     print("Improved sections created.\n")
 
     print("Creating final draft...")
@@ -168,12 +168,12 @@ def createArticle(qry, model="gpt-3.5-turbo-16k", max_tokens_outline=1000, max_t
         st.download_button(label=f"Download Final Draft ({qry})", data=file, key=qry)
     return final_draft
 
-def generateCategories(qry, numCats, model="gpt-3.5-turbo-16k", max_tokens=500):
+def generateCategories(qry, numCats, model="claude-3-opus-20240229-16k", max_tokens=500):
     prompt = f"Given the following query: {qry}, please provide 5 categories that would fit into a wordpress article of the same topic. The topics must differ from eachother and must also be related to the main query provided. Provide the categories in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'television' would be: ['Television Stores', 'Television Deals', 'Television Repair', 'Wall Television Installation', 'Television Shows', 'Television Remotes', 'Televisions For Home Use'] The response MUST include BOTH the questions AND the topics in the format provided. ENSURE THAT THE FORMATTING IS PROPER AND THERE ARE NO EXTRA BRACKETS/QUOTATION MARKS OR ANYTHING OF THE SORT. ALSO ENSURE THAT THERE ARE NO QUOTATION MARKS IN THE QUESTIONS THEMSELVES EX: won't should be changed to wont. IF THERE ARE THEY MUST BE REMOVED."
     categoryArray = generate_content(prompt, model=model, max_tokens=max_tokens)
     return categoryArray
 
-def generateSubTopics(qry, numArticles, model="gpt-3.5-turbo-16k", max_tokens=500): 
+def generateSubTopics(qry, numArticles, model="claude-3-opus-20240229-16k", max_tokens=500): 
     prompt = f"Given the following query: {qry}, please provide 5 questions that people also ask. The questions must differ from eachother and must also be related to the main query provided. Also provide 5 related topics to the main topic. The topics must differ from eachother and must also be related to the main query provided Provide the questions and topics in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'fly fishing in colorado' would be: ['colorado', 'wyoming', 'montana', 'alaska', 'bahamas', 'Where is fly fishing the most popular?', 'What state has best fly fishing?', Where is the best place to learn fly fishing?, What is the fly fishing capital of the world?, What is a famous quote about fly fishing?]. The response MUST include BOTH the questions AND the topics in the format provided. ENSURE THAT THE FORMATTING IS PROPER AND THERE ARE NO EXTRA BRACKETS/QUOTATION MARKS OR ANYTHING OF THE SORT. ALSO ENSURE THAT THERE ARE NO QUOTATION MARKS IN THE QUESTIONS THEMSELVES EX: won't should be changed to wont. IF THERE ARE THEY MUST BE REMOVED. MAKE SURE THAT THE FINAL RESULT IS PURELY THE ARRAY OF SUB TOPICS AND THERE IS NO EXTRA TEXT SUCH AS, questions = [array of text]."
     subTopicSent = generate_content(prompt, model=model, max_tokens=max_tokens)
     return subTopicSent
