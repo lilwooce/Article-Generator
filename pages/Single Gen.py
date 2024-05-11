@@ -192,7 +192,7 @@ def main():
 
 
     if qry:
-        article = quickArticle(qry)
+        article = createArticle(qry)
 
         st.write(article)
     
