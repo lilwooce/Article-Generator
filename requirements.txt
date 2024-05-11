@@ -13,3 +13,4 @@ regex
 ipython
 python-slugify
 lxml_html_clean
+anthropic
