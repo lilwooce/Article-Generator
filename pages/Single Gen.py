@@ -125,6 +125,7 @@ def generate_custom_content(prompt, model="claude-3-opus-20240229", max_tokens=3
 
 def quickArticle(qry, model="claude-3-opus-20240229"):
     a = generate_custom_content(qry, model)
+    st.write(a)
     save_to_file("article.txt", a)
     with open("article.txt") as file:
         st.download_button(label=f"Download Final Draft ({qry})", data=file, key=qry)
