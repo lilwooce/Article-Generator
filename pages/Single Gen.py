@@ -88,7 +88,7 @@ def generate_sections(improved_outline, model="claude-3-opus-20240229", max_toke
 
 
 
-def improve_section(section, i, model="claude-3-opus-20240229-16k", max_tokens=500):
+def improve_section(section, i, model="claude-3-opus-20240229", max_tokens=500):
     prompt = f"Given the following section of the article: {section}, please make thorough and improvements to this section. Only provide the updated section, not the text of your recommendation, just make the changes. Provide the updated section in Markdown please. Updated Section with improvements:"
     improved_section = generate_content(prompt, model=model, max_tokens=max_tokens)
     save_to_file(f"improved_section_{i+1}.txt", improved_section)
@@ -123,14 +123,14 @@ def generate_custom_content(prompt, model="claude-3-opus-20240229", max_tokens=3
 
     return message.content
 
-def quickArticle(qry, model="claude-3-opus-20240229-16k"):
-    a = generate_custom_content(qry)
+def quickArticle(qry, model="claude-3-opus-20240229"):
+    a = generate_custom_content(qry, model)
     save_to_file("article.txt", a)
     with open("article.txt") as file:
         st.download_button(label=f"Download Final Draft ({qry})", data=file, key=qry)
     return a
 
-def createArticle(qry, model="claude-3-opus-20240229-16k", max_tokens_outline=1000, max_tokens_section=2000, max_tokens_improve_section=2000):
+def createArticle(qry, model="claude-3-opus-20240229", max_tokens_outline=1000, max_tokens_section=2000, max_tokens_improve_section=2000):
     query = qry
     results = analyze_serps(query)
     summary = summarize_nlp(results)
@@ -168,12 +168,12 @@ def createArticle(qry, model="claude-3-opus-20240229-16k", max_tokens_outline=10
         st.download_button(label=f"Download Final Draft ({qry})", data=file, key=qry)
     return final_draft
 
-def generateCategories(qry, numCats, model="claude-3-opus-20240229-16k", max_tokens=500):
+def generateCategories(qry, numCats, model="claude-3-opus-20240229", max_tokens=500):
     prompt = f"Given the following query: {qry}, please provide 5 categories that would fit into a wordpress article of the same topic. The topics must differ from eachother and must also be related to the main query provided. Provide the categories in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'television' would be: ['Television Stores', 'Television Deals', 'Television Repair', 'Wall Television Installation', 'Television Shows', 'Television Remotes', 'Televisions For Home Use'] The response MUST include BOTH the questions AND the topics in the format provided. ENSURE THAT THE FORMATTING IS PROPER AND THERE ARE NO EXTRA BRACKETS/QUOTATION MARKS OR ANYTHING OF THE SORT. ALSO ENSURE THAT THERE ARE NO QUOTATION MARKS IN THE QUESTIONS THEMSELVES EX: won't should be changed to wont. IF THERE ARE THEY MUST BE REMOVED."
     categoryArray = generate_content(prompt, model=model, max_tokens=max_tokens)
     return categoryArray
 
-def generateSubTopics(qry, numArticles, model="claude-3-opus-20240229-16k", max_tokens=500): 
+def generateSubTopics(qry, numArticles, model="claude-3-opus-20240229", max_tokens=500): 
     prompt = f"Given the following query: {qry}, please provide 5 questions that people also ask. The questions must differ from eachother and must also be related to the main query provided. Also provide 5 related topics to the main topic. The topics must differ from eachother and must also be related to the main query provided Provide the questions and topics in a python array format so that I can define the output provided as a python array variable with no extra formatting on my part. For example, a good response that you must follow the format of if I gave you the prompt 'fly fishing in colorado' would be: ['colorado', 'wyoming', 'montana', 'alaska', 'bahamas', 'Where is fly fishing the most popular?', 'What state has best fly fishing?', Where is the best place to learn fly fishing?, What is the fly fishing capital of the world?, What is a famous quote about fly fishing?]. The response MUST include BOTH the questions AND the topics in the format provided. ENSURE THAT THE FORMATTING IS PROPER AND THERE ARE NO EXTRA BRACKETS/QUOTATION MARKS OR ANYTHING OF THE SORT. ALSO ENSURE THAT THERE ARE NO QUOTATION MARKS IN THE QUESTIONS THEMSELVES EX: won't should be changed to wont. IF THERE ARE THEY MUST BE REMOVED. MAKE SURE THAT THE FINAL RESULT IS PURELY THE ARRAY OF SUB TOPICS AND THERE IS NO EXTRA TEXT SUCH AS, questions = [array of text]."
     subTopicSent = generate_content(prompt, model=model, max_tokens=max_tokens)
     return subTopicSent
