@@ -17,18 +17,18 @@ from pytrends.request import TrendReq
 
 
 
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
-nltk.download('tagsets')
-nltk.download('words')
-nltk.download('maxent_ne_chunker')
-nltk.download('vader_lexicon')
-nltk.download('inaugural')
-nltk.download('webtext')
-nltk.download('treebank')
-nltk.download('gutenberg')
-nltk.download('genesis')
+# nltk.download('stopwords')
+# nltk.download('punkt')
+# nltk.download('averaged_perceptron_tagger')
+# nltk.download('tagsets')
+# nltk.download('words')
+# nltk.download('maxent_ne_chunker')
+# nltk.download('vader_lexicon')
+# nltk.download('inaugural')
+# nltk.download('webtext')
+# nltk.download('treebank')
+# nltk.download('gutenberg')
+# nltk.download('genesis')
 
 
 # Define a function to scrape Google search results and create a dataframe
