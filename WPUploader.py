@@ -6,8 +6,8 @@ from datetime import datetime
 from slugify import slugify
 import streamlit as st
 
-username = "protheus99@gmail.com"
-password = "mymf dsA0 V8o2 c4BQ SIan pywi"
+username = st.secrets('username')
+password = st.secrets('password')
 wordpress_credentials = username + ":" + password
 wordpress_token = base64.b64encode(wordpress_credentials.encode())
 wordpress_header = {'Authorization': 'Basic ' + wordpress_token.decode('utf-8'), 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36'}
