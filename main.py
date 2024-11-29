@@ -18,7 +18,9 @@ from pytrends.request import TrendReq
 
 
 nltk.download('stopwords')
+nltk.download('corpus')
 nltk.download('punkt')
+nltk.download('punkt_tab')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('tagsets')
 nltk.download('words')
